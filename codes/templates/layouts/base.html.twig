@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}projetWeb{% endblock %}</title>
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+        {% endblock %}
+    </head>
+    <body>
+    {% block header %}
+    {% endblock %}
+
+    {% block body %}
+        <div id="menu">
+            {% block menu %}
+            {% endblock %}
+        </div>
+
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+    </body>
+</html>
