@@ -28,13 +28,13 @@ class Panier
 
     /**
      * @ORM\ManyToOne(targetEntity=Utilisateurs::class, inversedBy="paniers")
-     * @ORM\JoinColumn(referencedColumnName="pk", nullable=false)
+     * @ORM\JoinColumn(name="utilisateur_pk", referencedColumnName="pk", nullable=false)
      */
     private $utilisateur;
 
     /**
      * @ORM\ManyToOne(targetEntity=Produits::class)
-     * @ORM\JoinColumn(referencedColumnName="pk", nullable=false)
+     * @ORM\JoinColumn(name="produit_pk", referencedColumnName="pk", nullable=false)
      */
     private $produit;
 
