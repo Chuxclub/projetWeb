@@ -26,6 +26,18 @@ class Panier
      */
     private $qte;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateurs::class, inversedBy="paniers")
+     * @ORM\JoinColumn(referencedColumnName="pk", nullable=false)
+     */
+    private $utilisateur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Produits::class)
+     * @ORM\JoinColumn(referencedColumnName="pk", nullable=false)
+     */
+    private $produit;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -39,6 +51,30 @@ class Panier
     public function setQte(int $qte): self
     {
         $this->qte = $qte;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?Utilisateurs
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?Utilisateurs $utilisateur): self
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    public function getProduit(): ?Produits
+    {
+        return $this->produit;
+    }
+
+    public function setProduit(?Produits $produit): self
+    {
+        $this->produit = $produit;
 
         return $this;
     }
