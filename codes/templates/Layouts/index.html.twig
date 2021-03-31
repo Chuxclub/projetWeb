@@ -1,4 +1,4 @@
-{% extends 'layouts/2ndLevelLayout1.html.twig' %}
+{% extends 'level2.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -10,11 +10,6 @@
         <img src="{{ asset('image/unicorn.png') }}" alt="You are a unicorn"/>
     </div>
 {% endblock %}
-
-{% block menu %}
-    {{ render(controller('App\\Controller\\UtilisateursController::getMenu')) }}
-{% endblock %}
-
 
 {% block content %}
     Welcome to our super awesome website!!

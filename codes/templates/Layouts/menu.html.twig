@@ -1,0 +1,9 @@
+{% block menu %}
+    {% if user is null %}
+        {% include "Utilisateurs/Visiteur/visitor_menu.html.twig" %}
+    {% elseif user.isAdmin %}
+        {% include "Utilisateurs/Admin/admin_menu.html.twig" %}
+    {% else %}
+        {% include "Utilisateurs/Client/customer_menu.html.twig" %}
+    {% endif %}
+{% endblock %}

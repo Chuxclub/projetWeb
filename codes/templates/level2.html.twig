@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% use 'Layouts/footer.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/secondlevel.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block menu %}
+    {{ render(controller('App\\Controller\\MainController::getMenu')) }}
+{% endblock %}

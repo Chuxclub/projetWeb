@@ -1,9 +1,0 @@
-{% block menu %}
-    {% if users is empty %}
-        {% include "layouts/visitor_menu.html.twig" %}
-    {% elseif users[0].isAdmin %}
-        {% include "layouts/admin_menu.html.twig" %}
-    {% else %}
-        {% include "layouts/customer_menu.html.twig" %}
-    {% endif %}
-{% endblock %}

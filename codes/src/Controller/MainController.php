@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Utilisateurs;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -19,16 +18,33 @@ class MainController extends AbstractController
      */
     public function indexAction(): Response
     {
-        return $this->render('index.html.twig');
+        return $this->render('Layouts/index.html.twig');
     }
 
-    /**
-     * @Route("/create_customer_account", name="create_customer_account")
-     */
-    public function createCustomerAccountAction(): Response
+    private function getGlobalUser(): ?Utilisateurs
     {
-        return $this->render('create_customer_account.html.twig');
+        $userLogin = $this->getParameter('login');
+
+        $em = $this->getDoctrine()->getManager();
+        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
+
+        /** @var Utilisateurs $user */
+        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
+        return $user;
     }
+
+    public function getMenu(): Response
+    {
+        $args = array('user' => $this->getGlobalUser());
+        return $this->render('Layouts/menu.html.twig', $args);
+    }
+
+    /*public function getHeader(): Response
+    {
+        $args = array('user' => $this->getGlobalUser());
+        return $this->render('Layouts/header.html.twig', $args);
+    }*/
+
 
     /**
      * @Route("/basket", name="basket")
