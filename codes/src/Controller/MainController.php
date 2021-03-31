@@ -10,7 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package App\Controller
  * @Route("/main")
  */
-
 class MainController extends AbstractController
 {
     /**
