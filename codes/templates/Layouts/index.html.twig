@@ -12,5 +12,8 @@
 {% endblock %}
 
 {% block content %}
+    {% for msg in app.session.flashBag.get('disconnectFlash') %}
+        {{ msg }}<br/>
+    {% endfor %}
     Welcome to our super awesome website!!
 {% endblock %}

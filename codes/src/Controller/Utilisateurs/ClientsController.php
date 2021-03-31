@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClientsController extends AbstractController
 {
     /**
-     * @Route("/create_customer_account", name="create_customer_account")
+     * @Route("/create", name="create")
      */
     public function createCustomerAccountAction(): Response
     {

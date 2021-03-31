@@ -36,4 +36,16 @@ class UtilisateursController extends AbstractController
 
         return new Response("<body>User all good!</body>");
     }
+
+    /**
+     * @Route(
+     *     "/deconnexion",
+     *     name="utilisateurs_deconnexion"
+     * )
+     */
+    public function disconnectAction(): Response
+    {
+        $this->addFlash('disconnectFlash', "You've been disconnected. Good bye!");
+        return $this->redirectToRoute("main_index");
+    }
 }
