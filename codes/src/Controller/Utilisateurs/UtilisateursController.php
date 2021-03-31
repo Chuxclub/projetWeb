@@ -26,9 +26,9 @@ class UtilisateursController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $user = new Utilisateurs();
-        $user->setLogin("darkRider86")
-            ->setMdp(sha1("nivek"))
-            ->setDateN(new \DateTime('2008-07-25'))
+        $user->setLogin("dummy")
+            ->setMdp(sha1("ymmud"))
+            ->setDateN(new \DateTime('2021-03-31'))
             ->setIsAdmin(false);
         $em->persist($user);
         $em->flush();
@@ -45,7 +45,7 @@ class UtilisateursController extends AbstractController
      */
     public function disconnectAction(): Response
     {
-        $this->addFlash('disconnectFlash', "You've been disconnected. Good bye!");
+        $this->addFlash('info', "You've been disconnected. Good bye!");
         return $this->redirectToRoute("main_index");
     }
 }

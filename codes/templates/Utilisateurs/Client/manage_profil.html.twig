@@ -1,1 +1,21 @@
-{{ form(myform) }}
+{#  {% extends "level2.html.twig" %} #}
+
+{% block content %}
+    {% for msg in app.session.flashBag.get('error') %}
+        {{ msg }}<br/><br/>
+    {% endfor %}
+
+    {{ form_start(myform) }}
+
+    {{ form_errors(myform) }}
+
+    <div>
+        {{ form_label(myform.login) }}
+        {{ form_errors(myform.login) }}
+        {{ form_widget(myform.login) }}
+    </div>
+
+    {{ form_rest(myform) }}
+
+    {{ form_end(myform) }}
+{% endblock %}

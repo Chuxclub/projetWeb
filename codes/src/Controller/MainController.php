@@ -21,7 +21,7 @@ class MainController extends AbstractController
         return $this->render('Layouts/index.html.twig');
     }
 
-    private function getGlobalUser(): ?Utilisateurs
+    public function getGlobalUser(): ?Utilisateurs
     {
         $userLogin = $this->getParameter('login');
 

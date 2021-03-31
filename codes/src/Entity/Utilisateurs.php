@@ -6,6 +6,8 @@ use App\Repository\UtilisateursRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Table (
@@ -174,5 +176,19 @@ class Utilisateurs
         }
 
         return $this;
+    }
+
+    // =================================== CALLBACKS
+    /**
+     * @Assert\Callback()
+     */
+    public function verifMdp(ExecutionContextInterface $context)
+    {
+        if (strlen($this->mdp) < 3)
+        {
+            $context->buildViolation('Your password is too short')
+            ->atPath('login')
+            ->addViolation();
+        }
     }
 }
