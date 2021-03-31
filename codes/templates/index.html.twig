@@ -1,5 +1,22 @@
 {% extends 'layouts/2ndLevelLayout1.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/welcome.css') }}" rel="stylesheet"/>
+
+{% endblock %}
+
+{% block header %}
+    <div id="header">
+        <img src="{{ asset('image/unicorn.png') }}" alt="You are a unicorn"/>
+    </div>
+{% endblock %}
+
+{% block menu %}
+    test de menu
+{% endblock %}
+
 {% block content %}
     Welcome to our super awesome website!!
+
 {% endblock %}

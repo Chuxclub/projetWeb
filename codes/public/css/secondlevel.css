@@ -1,0 +1,12 @@
+#menu {
+    margin : 20px;
+    border-style: ridge;
+}
+
+#content {
+    margin : 20px;
+    border-style: solid;
+}
+
+#footer {
+}

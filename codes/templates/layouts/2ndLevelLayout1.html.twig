@@ -1,4 +1,10 @@
 {% extends 'layouts/base.html.twig' %}
+{% use 'layouts/footer.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/secondlevel.css') }}" rel="stylesheet"/>
+{% endblock %}
 
 {% block header %}
 {% endblock %}
@@ -7,5 +13,3 @@
 {% block menu %}
 {% endblock %}
 
-{% block footer %}
-{% endblock %}
