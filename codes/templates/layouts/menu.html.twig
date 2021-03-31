@@ -1,16 +1,3 @@
-{% extends 'layouts/base.html.twig' %}
-{% use 'layouts/footer.html.twig' %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('css/secondlevel.css') }}" rel="stylesheet"/>
-{% endblock %}
-
-{% block header %}
-{% endblock %}
-
-
-{#
 {% block menu %}
     {% if users is empty %}
         {% include "layouts/visitor_menu.html.twig" %}
@@ -20,4 +7,3 @@
         {% include "layouts/customer_menu.html.twig" %}
     {% endif %}
 {% endblock %}
-#}

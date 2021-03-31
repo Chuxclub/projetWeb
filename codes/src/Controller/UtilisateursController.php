@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Utilisateurs;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -35,5 +36,20 @@ class UtilisateursController extends AbstractController
         dump($user);
 
         return new Response("<body>User all good!</body>");
+    }
+
+    public function getMenu(): Response
+    {
+        $userLogin = $this->getParameter('login');
+
+        $em = $this->getDoctrine()->getManager();
+        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
+        $users = $utilisateursRepository->findBy(array('login' => $userLogin));
+
+        if(sizeof($users) > 1)
+            throw new NotFoundHttpException();
+
+        $args = array('users' => $users);
+        return $this->render('layouts/menu.html.twig', $args);
     }
 }

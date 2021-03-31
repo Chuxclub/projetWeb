@@ -3,7 +3,6 @@
 {% block stylesheets %}
     {{ parent() }}
     <link href="{{ asset('css/welcome.css') }}" rel="stylesheet"/>
-
 {% endblock %}
 
 {% block header %}
@@ -13,10 +12,10 @@
 {% endblock %}
 
 {% block menu %}
-    test de menu
+    {{ render(controller('App\\Controller\\UtilisateursController::getMenu')) }}
 {% endblock %}
+
 
 {% block content %}
     Welcome to our super awesome website!!
-
 {% endblock %}
