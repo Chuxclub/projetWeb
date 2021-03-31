@@ -34,12 +34,12 @@ class UtilisateursController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $user = new Utilisateurs();
-        $user->setLogin("admin")
-            ->setMdp(sha1("nimda"))
-            ->setNom("admin")
-            ->setPrenom("admin")
-            ->setDateN(new \DateTime('1970-07-01'))
-            ->setIsAdmin(true);
+        $user->setLogin("chuxclub")
+            ->setMdp(sha1("nairolf"))
+            ->setNom("legendre")
+            ->setPrenom("florian")
+            ->setDateN(new \DateTime('1992-08-20'))
+            ->setIsAdmin(false);
         $em->persist($user);
         $em->flush();
         dump($user);
