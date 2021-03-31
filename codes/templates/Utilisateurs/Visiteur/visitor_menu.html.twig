@@ -1,5 +1,5 @@
 {% block menu %}
-    <a href="">connexion</a> </br>
-    <a href="">page d'accueil</a> </br>
-    <a href="create_customer_account">créer un compte</a>
+    <a href="{{ path('utilisateurs_connexion') }}">connexion</a> </br>
+    <a href="{{ path('main_index') }}">page d'accueil</a> </br>
+    <a href="{{ path('create_account') }}">créer un compte</a>
 {% endblock %}
