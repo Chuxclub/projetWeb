@@ -5,12 +5,6 @@
     <link href="{{ asset('css/welcome.css') }}" rel="stylesheet"/>
 {% endblock %}
 
-{% block header %}
-    <div id="header">
-        <img src="{{ asset('image/unicorn.png') }}" alt="You are a unicorn"/>
-    </div>
-{% endblock %}
-
 {% block content %}
     {% for msg in app.session.flashBag.get('info') %}
         {{ msg }}<br/>

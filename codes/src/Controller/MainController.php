@@ -39,11 +39,11 @@ class MainController extends AbstractController
         return $this->render('Layouts/menu.html.twig', $args);
     }
 
-    /*public function getHeader(): Response
+    public function getHeader(): Response
     {
         $args = array('user' => $this->getGlobalUser());
         return $this->render('Layouts/header.html.twig', $args);
-    }*/
+    }
 
 
     /**
