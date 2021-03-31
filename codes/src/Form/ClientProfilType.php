@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Utilisateurs;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,10 +15,10 @@ class ClientProfilType extends AbstractType
     {
         $builder
             ->add('login')
-            ->add('mdp')
+            ->add('mdp', PasswordType::class, ['label' => 'Mot de Passe', 'always_empty' => false])
             ->add('nom')
             ->add('prenom')
-            ->add('dateN')
+            ->add('dateN', DateType::class, ['label' => 'Date de Naissance'])
         ;
     }
 

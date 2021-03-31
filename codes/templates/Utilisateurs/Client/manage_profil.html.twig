@@ -1,4 +1,4 @@
-{#  {% extends "level2.html.twig" %} #}
+{% extends "level2.html.twig" %}
 
 {% block content %}
     {% for msg in app.session.flashBag.get('error') %}
@@ -13,6 +13,12 @@
         {{ form_label(myform.login) }}
         {{ form_errors(myform.login) }}
         {{ form_widget(myform.login) }}
+    </div>
+
+    <div>
+        {{ form_label(myform.mdp) }}
+        {{ form_errors(myform.mdp) }}
+        {{ form_widget(myform.mdp) }}
     </div>
 
     {{ form_rest(myform) }}

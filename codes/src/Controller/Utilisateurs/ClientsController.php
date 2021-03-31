@@ -8,6 +8,7 @@ use App\Entity\Utilisateurs;
 use App\Form\ClientProfilType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,15 +36,21 @@ class ClientsController extends AbstractController
 
         //On crée le formulaire:
         $form = $this->createForm(ClientProfilType::class, $user);
-        $form->add('send', SubmitType::class, ['label' => 'Edit Profile']);
+        $form->add('send', SubmitType::class, ['label' => 'Editer le Profil']);
 
         //On gère le formulaire:
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
-            $em->flush();
-            $this->addFlash('info', "Your profile has been edited!");
-            return $this->redirectToRoute('main_index');
+            try {
+                $em->flush();
+                $this->addFlash('info', "Your profile has been edited!");
+                return $this->redirectToRoute('main_index');
+            }
+
+            //TODO : Si plusieurs champs pouvant être uniques? Si plusieurs types d'exceptions?
+            catch(\Exception $e)
+            {$form->addError(new FormError("Sorry! This login already exists."));}
         }
 
         if ($form->isSubmitted())

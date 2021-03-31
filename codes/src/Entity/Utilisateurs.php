@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UtilisateursRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -27,7 +28,11 @@ class Utilisateurs
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=30, options={"comment"="sert de login (doit être unique)"})
+     * @ORM\Column(
+     *     type="string",
+     *     length=30,
+     *     options={"comment"="sert de login (doit être unique)"}
+     *     )
      */
     private $login;
 
@@ -187,8 +192,11 @@ class Utilisateurs
         if (strlen($this->mdp) < 3)
         {
             $context->buildViolation('Your password is too short')
-            ->atPath('login')
+            ->atPath('mdp')
             ->addViolation();
         }
+
+        else
+            $this->setMdp(sha1($this->mdp));
     }
 }
