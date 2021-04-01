@@ -61,6 +61,7 @@ class ClientsController extends AbstractController
         return $this->render('Utilisateurs/Client/manage_profil.html.twig', $args);
     }
 
+
     /**
      * @Route(
      *      "/panier",
@@ -90,7 +91,7 @@ class ClientsController extends AbstractController
         {
             for($j = 0; $j < count($produits); $j++)
             {
-                if($paniers[$i]->getProduit() == $produits[$j]->getId())
+                if($paniers[$i]->getProduit()->getId() == $produits[$j]->getId())
                 {
                     $jointure[$i] =
                         [
