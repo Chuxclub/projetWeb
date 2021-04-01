@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('css/welcome.css') }}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{ absolute_url(asset('css/welcome.css')) }}"/>
 {% endblock %}
 
 {% block content %}
