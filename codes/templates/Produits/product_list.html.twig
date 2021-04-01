@@ -1,0 +1,17 @@
+{% extends "level2.html.twig" %}
+
+{% block content %}
+    <h1>Liste des produits de notre magasin</h1>
+
+    <p>
+    <table style="border:solid; border-collapse : collapse">
+        {% for produit in produits %}
+            <tr>
+                <td style="border:solid";>{{ produit.libelle }}</td>
+                <td style="border:solid";>{{ produit.prixUnitaire }}</td>
+                <td style="border:solid";>{{ produit.qte }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </p>
+{% endblock %}

@@ -35,4 +35,19 @@ class ProduitsController extends AbstractController
 
         return new Response("<body>Product all good!</body>");
     }
+
+    /**
+     * @Route(
+     *     "/liste",
+     *     name="produits_liste"
+     * )
+     */
+    public function produitsListerAction(): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $produitsRepository = $em->getRepository('App\Entity\Produits');
+        $produits = $produitsRepository->findAll();
+
+        return $this->render('Produits/product_list.html.twig', ['produits' => $produits]);
+    }
 }
