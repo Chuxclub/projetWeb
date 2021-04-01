@@ -4,6 +4,7 @@
 namespace App\Controller\Utilisateurs;
 
 
+use App\Entity\Produits;
 use App\Entity\Utilisateurs;
 use App\Form\ClientProfilType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -70,9 +71,38 @@ class ClientsController extends AbstractController
     public function contenuPanierAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
+
+        //On récupère l'utilisateur global de la base et son panier:
+        $userLogin = $this->getParameter('login');
+        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
+        /** @var Utilisateurs $user */
+        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
+        $paniers = $user->getPaniers();
+
+        //On récupère les produits de la base:
         $produitsRepository = $em->getRepository('App\Entity\Produits');
+        /** @var Produits[] $produits */
         $produits = $produitsRepository->findAll();
 
-        return $this->render('Produits/product_list.html.twig', ['produits' => $produits]);
+        //On fait la jointure:
+        $jointure = [];
+        for($i = 0; $i < $paniers->count(); $i++)
+        {
+            for($j = 0; $j < count($produits); $j++)
+            {
+                if($paniers[$i]->getProduit() == $produits[$j]->getId())
+                {
+                    $jointure[$i] =
+                        [
+                            $produits[$j]->getLibelle(),
+                            $produits[$j]->getPrixUnitaire(),
+                            $paniers[$i]->getQte(),
+                            $produits[$j]->getPrixUnitaire()*$paniers[$i]->getQte()
+                        ];
+                }
+            }
+        }
+
+        return $this->render('Utilisateurs/Client/basket.html.twig', ['jointure' => $jointure]);
     }
 }
