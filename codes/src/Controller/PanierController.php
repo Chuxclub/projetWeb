@@ -27,7 +27,8 @@ class PanierController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        //On prend un utilisateur:
+        //On prend un utilisateur (on pourrait prendre n'importe lequel mais on choisit
+        // l'utilisateur courant ici pour pouvoir tester rapidement dans un navigateur) :
         $userLogin = $this->getParameter('login');
         $utilisateursRepository = $em->getRepository('App:Utilisateurs');
         /** @var Utilisateurs $user */
