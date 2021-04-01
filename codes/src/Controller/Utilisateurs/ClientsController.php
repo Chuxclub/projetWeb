@@ -59,4 +59,20 @@ class ClientsController extends AbstractController
         $args = array('myform' => $form->createView());
         return $this->render('Utilisateurs/Client/manage_profil.html.twig', $args);
     }
+
+    /**
+     * @Route(
+     *      "/panier",
+     *      name="clients_panier"
+     * )
+     */
+    //TODO: La vue et l'action doivent être adaptée à l'objectif de l'action
+    public function contenuPanierAction(): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $produitsRepository = $em->getRepository('App\Entity\Produits');
+        $produits = $produitsRepository->findAll();
+
+        return $this->render('Produits/product_list.html.twig', ['produits' => $produits]);
+    }
 }
