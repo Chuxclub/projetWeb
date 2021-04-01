@@ -5,11 +5,24 @@
 
     <p>
     <table style="border:solid; border-collapse : collapse">
+    <tr>
+        <th>Libellé</th>
+        <th>Prix</th>
+        <th>Stock</th>
+        <th>Choix</th>
+    </tr>
         {% for produit in produits %}
             <tr>
                 <td style="border:solid";>{{ produit.libelle }}</td>
                 <td style="border:solid";>{{ produit.prixUnitaire }}</td>
                 <td style="border:solid";>{{ produit.qte }}</td>
+                <td style="border:solid";>
+                    <select>
+                        {% for i in 0..produit.qte %}
+                            <option>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
             </tr>
         {% endfor %}
     </table>
