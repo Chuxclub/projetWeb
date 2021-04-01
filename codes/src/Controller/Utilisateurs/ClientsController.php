@@ -87,6 +87,8 @@ class ClientsController extends AbstractController
 
         //On fait la jointure:
         $jointure = [];
+        $qteTotale = 0;
+        $prixTotal = 0;
         for($i = 0; $i < $paniers->count(); $i++)
         {
             for($j = 0; $j < count($produits); $j++)
@@ -100,10 +102,13 @@ class ClientsController extends AbstractController
                             $paniers[$i]->getQte(),
                             $produits[$j]->getPrixUnitaire()*$paniers[$i]->getQte()
                         ];
+                    $qteTotale += $paniers[$i]->getQte();
+                    $prixTotal += $produits[$j]->getPrixUnitaire()*$paniers[$i]->getQte();
                 }
             }
         }
 
-        return $this->render('Utilisateurs/Client/basket.html.twig', ['jointure' => $jointure]);
+        return $this->render('Utilisateurs/Client/basket.html.twig',
+            ['jointure' => $jointure, 'qteTotale' => $qteTotale, 'prixTotal' => $prixTotal]);
     }
 }

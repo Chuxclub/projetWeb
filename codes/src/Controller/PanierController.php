@@ -37,13 +37,13 @@ class PanierController extends AbstractController
         //On prend un produit:
         $produitsRepository = $em->getRepository('App:Produits');
         /** @var Produits $produit */
-        $produit = $produitsRepository->find(8);//TLZ Majora's Mask
+        $produit = $produitsRepository->find(2);//TLZ Majora's Mask
 
         //On crée le panier + ajout à la base:
         $panier = new Panier();
         $panier->setUtilisateur($user)
             ->setProduit($produit)
-            ->setQte(3);
+            ->setQte(15);
         $em->persist($panier);
         $em->flush();
         dump($panier);
