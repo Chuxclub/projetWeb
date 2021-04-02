@@ -91,24 +91,30 @@ class ClientsController extends AbstractController
         $prixTotal = 0;
         for($i = 0; $i < $paniers->count(); $i++)
         {
-            for($j = 0; $j < count($produits); $j++)
-            {
-                if($paniers[$i]->getProduit()->getId() == $produits[$j]->getId())
-                {
-                    $jointure[$i] =
-                        [
-                            $produits[$j]->getLibelle(),
-                            $produits[$j]->getPrixUnitaire(),
-                            $paniers[$i]->getQte(),
-                            $produits[$j]->getPrixUnitaire()*$paniers[$i]->getQte()
-                        ];
-                    $qteTotale += $paniers[$i]->getQte();
-                    $prixTotal += $produits[$j]->getPrixUnitaire()*$paniers[$i]->getQte();
-                }
-            }
+            $prixCommande = $paniers[$i]->getProduit()->getPrixUnitaire()*$paniers[$i]->getQte();
+            $jointure[$i] =
+                [
+                    $paniers[$i]->getProduit()->getLibelle(),
+                    $paniers[$i]->getProduit()->getPrixUnitaire(),
+                    $paniers[$i]->getProduit()->getQte(),
+                    $prixCommande,
+                    $paniers[$i]->getProduit()->getId()
+                ];
+            $qteTotale += $paniers[$i]->getQte();
+            $prixTotal += $prixCommande;
         }
 
         return $this->render('Utilisateurs/Client/basket.html.twig',
             ['jointure' => $jointure, 'qteTotale' => $qteTotale, 'prixTotal' => $prixTotal]);
+    }
+
+    /**
+     * @Route(
+     *      name="update_panier"
+     * )
+     */
+    public function updatePanierAction(): Response
+    {
+        return $this->redirectToRoute("clients_panier");
     }
 }

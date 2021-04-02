@@ -3,6 +3,7 @@
 {% block content %}
     <h1>Contenu de votre panier</h1>
 
+    <form action="{{ path("update_panier") }}" method="post">
     <p>
     <table style="border:solid; border-collapse : collapse">
         <tr>
@@ -14,11 +15,11 @@
         </tr>
         {% for produit in jointure %}
             <tr>
-                <td style="border:solid";>{{ produit[0] }}</td>
-                <td style="border:solid";>{{ produit[1] }}</td>
-                <td style="border:solid";>{{ produit[2] }}</td>
-                <td style="border:solid";>{{ produit[3] }}</td>
-                <td><input type="button" value="Supprimer" /></td>
+                <td style="border:solid";>{{ produit[0] }}</td> <!-- libelle -->
+                <td style="border:solid";>{{ produit[1] }}</td> <!-- prix unitaire -->
+                <td style="border:solid";>{{ produit[2] }}</td> <!-- qte -->
+                <td style="border:solid";>{{ produit[3] }}</td> <!-- prix commande -->
+                <td><input type="button" name="{{ produit[4] }}" value="Supprimer" /></td> <!-- id produit -->
             </tr>
         {% endfor %}
         <tr>
@@ -35,4 +36,5 @@
         </tr>
     </table>
     </p>
+    </form>
 {% endblock %}
