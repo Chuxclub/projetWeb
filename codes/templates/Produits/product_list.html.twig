@@ -1,6 +1,10 @@
 {% extends "level2.html.twig" %}
 
 {% block content %}
+    {% for msg in app.session.flashBag.get('info') %}
+        {{ msg }}<br/><br/>
+    {% endfor %}
+
     <h1>Liste des produits de notre magasin</h1>
 
     <form action="{{ path("produits_ajoutPanier") }}" method="post">

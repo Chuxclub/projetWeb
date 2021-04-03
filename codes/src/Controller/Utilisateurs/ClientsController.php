@@ -50,7 +50,7 @@ class ClientsController extends AbstractController
             try {
                 $this->em->flush();
                 $this->addFlash('info', "Your profile has been edited!");
-                return $this->redirectToRoute('main_index');
+                return $this->redirectToRoute('produits_liste');
             }
 
             //TODO : Si plusieurs champs pouvant être uniques? Si plusieurs types d'exceptions?
