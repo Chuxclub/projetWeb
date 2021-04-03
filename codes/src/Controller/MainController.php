@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Produits;
 use App\Service\GlobalUser;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,6 +15,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class MainController extends AbstractController
 {
+    private $em;
+    private $user;
+
+    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+        $this->user = $globalUser->getGlobalUser();
+    }
+
     /**
      * @Route("", name="main_index")
      */
@@ -22,10 +32,9 @@ class MainController extends AbstractController
         return $this->render('Layouts/index.html.twig');
     }
 
-    public function getMenu(GlobalUser $user): Response
+    public function getMenu(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $produitsRepository = $em->getRepository('App:Produits');
+        $produitsRepository = $this->em->getRepository('App:Produits');
         /** @var Produits[] $produits */
         $produits = $produitsRepository->findAll();
 
@@ -33,13 +42,13 @@ class MainController extends AbstractController
         for($i = 0; $i < count($produits); $i++)
             $totalProduits += $produits[$i]->getQte();
 
-        $args = array('totalProduits' => $totalProduits, 'user' => $user->getGlobalUser());
+        $args = array('totalProduits' => $totalProduits, 'user' => $this->user);
         return $this->render('Layouts/menu.html.twig', $args);
     }
 
-    public function getHeader(GlobalUser $user): Response
+    public function getHeader(): Response
     {
-        $args = array('user' => $user->getGlobalUser());
+        $args = array('user' => $this->user);
         return $this->render('Layouts/header.html.twig', $args);
     }
 

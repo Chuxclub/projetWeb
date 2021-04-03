@@ -6,6 +6,8 @@ namespace App\Controller\Utilisateurs;
 
 use App\Entity\Utilisateurs;
 use App\Form\CreateAccountType;
+use App\Service\GlobalUser;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +20,20 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+    private $em;
+    private $user;
+
+    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+        $this->user = $globalUser->getGlobalUser();
+    }
 
     /**
      * @Route("/deleteAccount", name="delete_account")
      */
-    public function deleteAccountAction(Request $request): Response
+    public function deleteAccountAction(): Response
     {
-        $em = $this->getDoctrine()->getManager();
         return $this->render('Utilisateurs/Admin/manage_users.html.twig');
     }
 

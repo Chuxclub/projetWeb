@@ -5,6 +5,8 @@ namespace App\Controller;
 
 
 use App\Entity\Produits;
+use App\Service\GlobalUser;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProduitsController extends AbstractController
 {
+    private $em;
+    private $user;
+
+    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+        $this->user = $globalUser->getGlobalUser();
+    }
+
     /**
      * @Route(
      *     "/ajouterendur",
@@ -23,14 +34,12 @@ class ProduitsController extends AbstractController
      */
     public function produitsAjouterEnDurAction(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         $product = new Produits();
         $product->setLibelle("Zelda Majora's Mask")
                 ->setPrixUnitaire(32)
                 ->setQte(1);
-        $em->persist($product);
-        $em->flush();
+        $this->em->persist($product);
+        $this->em->flush();
         dump($product);
 
         return new Response("<body>Product all good!</body>");
@@ -44,8 +53,7 @@ class ProduitsController extends AbstractController
      */
     public function produitsListerAction(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $produitsRepository = $em->getRepository('App\Entity\Produits');
+        $produitsRepository = $this->em->getRepository('App\Entity\Produits');
         $produits = $produitsRepository->findAll();
 
         return $this->render('Produits/product_list.html.twig', ['produits' => $produits]);

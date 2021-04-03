@@ -5,6 +5,8 @@ namespace App\Controller\Utilisateurs;
 
 
 use App\Entity\Utilisateurs;
+use App\Service\GlobalUser;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UtilisateursController extends AbstractController
 {
+    private $em;
+    private $user;
+
+    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+        $this->user = $globalUser->getGlobalUser();
+    }
+
     /**
      * @Route(
      *     "/ajouterendur",
@@ -23,15 +34,13 @@ class UtilisateursController extends AbstractController
      */
     public function utilisateursAjouterEnDurAction(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         $user = new Utilisateurs();
         $user->setLogin("dummy")
             ->setMdp(sha1("ymmud"))
             ->setDateN(new \DateTime('2021-03-31'))
             ->setIsAdmin(false);
-        $em->persist($user);
-        $em->flush();
+        $this->em->persist($user);
+        $this->em->flush();
         dump($user);
 
         return new Response("<body>User all good!</body>");

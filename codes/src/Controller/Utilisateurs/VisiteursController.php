@@ -5,6 +5,8 @@ namespace App\Controller\Utilisateurs;
 
 
 use App\Entity\Utilisateurs;
+use App\Service\GlobalUser;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,13 +21,20 @@ use App\Form\CreateAccountType;
  */
 class VisiteursController extends AbstractController
 {
+    private $em;
+    private $user;
+
+    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+        $this->user = $globalUser->getGlobalUser();
+    }
+
     /**
      * @Route("/createAccount", name="create_account")
      */
     public function createAccountAction(Request $request): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         $newUser = new Utilisateurs();
 
         $form = $this->createForm(CreateAccountType::class, $newUser);
@@ -35,8 +44,8 @@ class VisiteursController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
-                $em->persist($newUser);
-                $em->flush();
+                $this->em->persist($newUser);
+                $this->em->flush();
                 $this->addFlash('info', "New account created");
                 return $this->redirectToRoute('main_index');
         }
