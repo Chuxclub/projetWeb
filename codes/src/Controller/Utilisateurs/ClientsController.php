@@ -74,7 +74,7 @@ class ClientsController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
 
-        //On récupère l'utilisateur global de la base et son panier:
+        //On récupère l'utilisateur global de la base et ses paniers:
         $userLogin = $this->getParameter('login');
         $utilisateursRepository = $em->getRepository('App:Utilisateurs');
         /** @var Utilisateurs $user */
@@ -82,38 +82,35 @@ class ClientsController extends AbstractController
         $paniers = $user->getPaniers();
 
         return $this->render('Utilisateurs/Client/basket.html.twig', ['paniers' => $paniers]);
+    }
 
-        //On fait la jointure:
-        /*$jointure = [];
-        $qteTotale = 0;
-        $prixTotal = 0;
+    private function supprimerPanier($em, $panierToDelete)
+    {
+        //On supprime le panier:
+        $em->persist($panierToDelete);
+        $em->remove($panierToDelete);
+        $em->flush();
+    }
 
-        for($i = 0; $i < $paniers->count(); $i++)
-        {
-            $prixCommande = $paniers[$i]->getProduit()->getPrixUnitaire()*$paniers[$i]->getQte();
-            $jointure[$i] =
-                [
-                    $paniers[$i]->getProduit()->getLibelle(),
-                    $paniers[$i]->getProduit()->getPrixUnitaire(),
-                    $paniers[$i]->getQte(),
-                    $prixCommande,
-                    $paniers[$i]->getProduit()->getId()
-                ];
-            $qteTotale += $paniers[$i]->getQte();
-            $prixTotal += $prixCommande;
-        }*/
+    private function supprimerPanierBD($em, $idProduit, $panierToDelete)
+    {
+        //On récupère modifie la quantité du produit correspondant dans la base du magasin:
+        $produitsRepository = $em->getRepository('App\Entity\Produits');
+        /** @var Produits $produit */
+        $produit = $produitsRepository->find($idProduit);
+        $produit->setQte($produit->getQte() + $panierToDelete->getQte());
 
-        /*return $this->render('Utilisateurs/Client/basket.html.twig',
-            ['jointure' => $jointure, 'qteTotale' => $qteTotale, 'prixTotal' => $prixTotal]);*/
+        //On supprime le panier:
+        $this->supprimerPanier($em, $panierToDelete);
     }
 
     /**
      * @Route(
-     *     "/remove_panier/{idProduit}",
-     *      name="remove_panier"
+     *     "/acheter",
+     *      name="acheter_panier"
      * )
      */
-    public function supprimerPanierAction($idProduit): Response
+    public function acheterAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -124,13 +121,10 @@ class ClientsController extends AbstractController
         $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
         $paniers = $user->getPaniers();
 
-        //On recherche le panier à supprimer:
-        $paniersRepository = $em->getRepository('App:Panier');
-        /** @var Panier $panier */
-        $panierToDelete = $paniersRepository->findOneBy(['utilisateur' => $user, 'produit' => $idProduit]);
-
-        //On supprime:
-        $this->supprimerPanier($em, $idProduit, $panierToDelete);
+        //On supprime tout:
+        $paniersLen = $paniers->count();
+        for($i = 0; $i < $paniersLen; $i++)
+            $this->supprimerPanier($em, $paniers[$i]);
 
         //On redirige:
         return $this->redirectToRoute("clients_panier");
@@ -156,23 +150,38 @@ class ClientsController extends AbstractController
         //On supprime tout:
         $paniersLen = $paniers->count();
         for($i = 0; $i < $paniersLen; $i++)
-            $this->supprimerPanier($em, $paniers[$i]->getProduit()->getId(), $paniers[$i]);
+            $this->supprimerPanierBD($em, $paniers[$i]->getProduit()->getId(), $paniers[$i]);
 
         //On redirige:
         return $this->redirectToRoute("clients_panier");
     }
 
-    private function supprimerPanier($em, $idProduit, $panierToDelete)
+    /**
+     * @Route(
+     *     "/remove_panier/{idProduit}",
+     *      name="remove_panier"
+     * )
+     */
+    public function supprimerPanierAction($idProduit): Response
     {
-        //On récupère modifie la quantité du produit correspondant dans la base du magasin:
-        $produitsRepository = $em->getRepository('App\Entity\Produits');
-        /** @var Produits $produit */
-        $produit = $produitsRepository->find($idProduit);
-        $produit->setQte($produit->getQte() + $panierToDelete->getQte());
+        $em = $this->getDoctrine()->getManager();
 
-        //On supprime le panier:
-        $em->persist($panierToDelete);
-        $em->remove($panierToDelete);
-        $em->flush();
+        //On récupère l'utilisateur global de la base et ses paniers:
+        $userLogin = $this->getParameter('login');
+        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
+        /** @var Utilisateurs $user */
+        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
+        $paniers = $user->getPaniers();
+
+        //On recherche le panier à supprimer:
+        $paniersRepository = $em->getRepository('App:Panier');
+        /** @var Panier $panier */
+        $panierToDelete = $paniersRepository->findOneBy(['utilisateur' => $user, 'produit' => $idProduit]);
+
+        //On supprime:
+        $this->supprimerPanierBD($em, $idProduit, $panierToDelete);
+
+        //On redirige:
+        return $this->redirectToRoute("clients_panier");
     }
 }

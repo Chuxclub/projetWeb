@@ -20,9 +20,8 @@
                 <td style="border:solid";>{{ panier.produit.prixUnitaire }}</td>
                 <td style="border:solid";>{{ panier.qte }}</td>
                 <td style="border:solid";>{{ panier.produit.prixUnitaire * panier.qte }}</td>
-                <form action="{{ path("remove_panier", {'idProduit': panier.produit.id}) }}" method="post">
-                    <td><input type="submit" name="supprimer" value="Supprimer" /></td>
-                </form>
+                <td><a href="{{ path("remove_panier", {'idProduit': panier.produit.id}) }}"
+                       class="button">Supprimer</a></td>
             </tr>
             {% set qteTotale = qteTotale + panier.qte %}
             {% set prixTotal = prixTotal + panier.produit.prixUnitaire * panier.qte  %}
@@ -36,49 +35,9 @@
         </tr>
         <tr>
             <td colspan="3"></td>
-            <td><input type="button" value="Acheter" /></td>
-            <form action="{{ path("empty_panier") }}" method="post">
-                <td><input type="submit" name="vider" value="Vider" /></td>
-            </form>
+            <td><a href="{{ path("acheter_panier") }}" class="button">Acheter</a></td>
+            <td><a href="{{ path("empty_panier") }}" class="button">Vider</a></td>
         </tr>
     </table>
     </p>
-
-
-{#    <p>#}
-{#    <table style="border:solid; border-collapse : collapse">#}
-{#        <tr>#}
-{#            <th>Libellé</th>#}
-{#            <th>Prix Unitaire</th>#}
-{#            <th>Quantité</th>#}
-{#            <th>Prix total</th>#}
-{#            <th>Action</th>#}
-{#        </tr>#}
-{#        {% for produit in jointure %}#}
-{#            <tr>#}
-{#                <td style="border:solid";>{{ produit[0] }}</td> <!-- libelle -->#}
-{#                <td style="border:solid";>{{ produit[1] }}</td> <!-- prix unitaire -->#}
-{#                <td style="border:solid";>{{ produit[2] }}</td> <!-- qte -->#}
-{#                <td style="border:solid";>{{ produit[3] }}</td> <!-- prix commande -->#}
-{#                <form action="{{ path("remove_panier", {'idProduit': produit[4]}) }}" method="post">#}
-{#                    <td><input type="submit" name="supprimer" value="Supprimer" /></td>#}
-{#                </form>#}
-{#            </tr>#}
-{#        {% endfor %}#}
-{#        <tr>#}
-{#            <td>Total</td>#}
-{#            <td></td>#}
-{#            <td>{{ qteTotale }}</td>#}
-{#            <td>{{ prixTotal }}</td>#}
-{#            <td></td>#}
-{#        </tr>#}
-{#        <tr>#}
-{#            <td colspan="3"></td>#}
-{#            <td><input type="button" value="Acheter" /></td>#}
-{#            <form action="{{ path("empty_panier") }}" method="post">#}
-{#                <td><input type="submit" name="vider" value="Vider" /></td>#}
-{#            </form>#}
-{#        </tr>#}
-{#    </table>#}
-{#    </p>#}
 {% endblock %}
