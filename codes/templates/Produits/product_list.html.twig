@@ -1,0 +1,40 @@
+<<<<<<< HEAD
+=======
+{% extends "level2.html.twig" %}
+
+{% block content %}
+    {% for msg in app.session.flashBag.get('info') %}
+        {{ msg }}<br/><br/>
+    {% endfor %}
+
+    <h1>Liste des produits de notre magasin</h1>
+
+    <form action="{{ path("produits_ajoutPanier") }}" method="post">
+    <p>
+    <table style="border:solid; border-collapse : collapse">
+    <tr>
+        <th>Libellé</th>
+        <th>Prix</th>
+        <th>Stock</th>
+        <th>Choix</th>
+    </tr>
+        {% for produit in produits %}
+            <tr>
+                <td style="border:solid";>{{ produit.libelle }}</td>
+                <td style="border:solid";>{{ produit.prixUnitaire }}</td>
+                <td style="border:solid";>{{ produit.qte }}</td>
+                <td style="border:solid";>
+                    <select name="{{ produit.id }}">
+                        {% for i in 0..produit.qte %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+        {% endfor %}
+    <tr><td colspan="4"><input type="submit" value="Ajouter au Panier"/></td></tr>
+    </table>
+    </p>
+    </form>
+{% endblock %}
+>>>>>>> 8835208b3f3c66c61e1793b1a4ab87c7a702cfb1

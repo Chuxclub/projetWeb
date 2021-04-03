@@ -1,5 +1,9 @@
 codes/.idea/deployment.xml
 codes/.idea/vcs.xml*
 codes/.idea/workspace.xml*
+<<<<<<< HEAD
 codes/composer.lock
 *.vpp?*
+=======
+*.vpp?*
+>>>>>>> 8835208b3f3c66c61e1793b1a4ab87c7a702cfb1
