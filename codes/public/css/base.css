@@ -1,15 +1,9 @@
 img {
-    max-width: 18%;
+    max-width: 20%;
     height: auto;
 }
 
 body {
     background-color: yellow;
-    height: 100%;
-}
-
-html{
-    height: 100%;
-    margin: 0;
 }
 

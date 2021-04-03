@@ -1,15 +1,11 @@
 #menu {
-    width: fit-content;
+    margin : 20px;
     border-style: ridge;
-    margin:10px auto;
-    padding: 10px;
 }
 
 #content {
+    margin : 20px;
     border-style: solid;
-    margin:30px auto;
-    padding: 10px;
-    width: fit-content;
 }
 
 #footer {

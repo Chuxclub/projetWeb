@@ -4,14 +4,13 @@
         <meta charset="UTF-8">
         <title>{% block title %}projetWeb{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('css/base.css') }}"/>
+            <link href="{{ asset('css/base.css') }}" rel="stylesheet"/>
         {% endblock %}
 
         {% block javascripts %}
         {% endblock %}
     </head>
     <body>
-    <div style="text-align: center;">
     {% block header %}
     {% endblock %}
 
@@ -29,6 +28,5 @@
 
     {% block footer %}
     {% endblock %}
-    </div>
     </body>
 </html>

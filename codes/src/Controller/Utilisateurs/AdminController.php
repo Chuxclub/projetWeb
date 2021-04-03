@@ -20,12 +20,28 @@ class AdminController extends AbstractController
 {
 
     /**
-     * @Route("/deleteAccount", name="delete_account")
+     * @Route("/manageAccount", name="manage_account")
      */
-    public function deleteAccountAction(Request $request): Response
+    public function manageAccountAction(): Response
+    {
+        $users = $this->getDoctrine()->getRepository(Utilisateurs::class)->findAll();
+
+        return $this->render('Utilisateurs/Admin/manage_users.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
+    /**
+     * @Route("/deleteAccount/{id}", name="delete_account")
+     */
+    public function deleteAccountAction(Utilisateurs $user): Response
     {
         $em = $this->getDoctrine()->getManager();
-        return $this->render('Utilisateurs/Admin/manage_users.html.twig');
+
+        $em->remove($user);
+        $em->flush();
+
+        return $this->redirectToRoute("main_index");
     }
 
 }

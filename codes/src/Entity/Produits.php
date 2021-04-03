@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\ProduitsRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table (
@@ -29,13 +28,11 @@ class Produits
     private $libelle;
 
     /**
-     * @Assert\Positive(message="We are Unic'Corner Gaming not a charity!")
      * @ORM\Column(type="integer")
      */
     private $prixUnitaire;
 
     /**
-     * @Assert\PositiveOrZero(message="Not enough products for this order!")
      * @ORM\Column(type="integer")
      */
     private $qte;

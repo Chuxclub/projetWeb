@@ -4,7 +4,6 @@
 namespace App\Controller\Utilisateurs;
 
 
-use App\Entity\Produits;
 use App\Entity\Utilisateurs;
 use App\Form\ClientProfilType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -60,94 +58,5 @@ class ClientsController extends AbstractController
 
         $args = array('myform' => $form->createView());
         return $this->render('Utilisateurs/Client/manage_profil.html.twig', $args);
-    }
-
-
-    /**
-     * @Route(
-     *      "/panier",
-     *      name="clients_panier"
-     * )
-     */
-    public function contenuPanierAction(): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        //On récupère l'utilisateur global de la base et son panier:
-        $userLogin = $this->getParameter('login');
-        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
-        /** @var Utilisateurs $user */
-        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
-        $paniers = $user->getPaniers();
-
-        //On récupère les produits de la base:
-        $produitsRepository = $em->getRepository('App\Entity\Produits');
-        /** @var Produits[] $produits */
-        $produits = $produitsRepository->findAll();
-
-        //On fait la jointure:
-        $jointure = [];
-        $qteTotale = 0;
-        $prixTotal = 0;
-
-        for($i = 0; $i < $paniers->count(); $i++)
-        {
-            $prixCommande = $paniers[$i]->getProduit()->getPrixUnitaire()*$paniers[$i]->getQte();
-            $jointure[$i] =
-                [
-                    $paniers[$i]->getProduit()->getLibelle(),
-                    $paniers[$i]->getProduit()->getPrixUnitaire(),
-                    $paniers[$i]->getQte(),
-                    $prixCommande,
-                    $paniers[$i]->getProduit()->getId()
-                ];
-            $qteTotale += $paniers[$i]->getQte();
-            $prixTotal += $prixCommande;
-        }
-
-        return $this->render('Utilisateurs/Client/basket.html.twig',
-            ['jointure' => $jointure, 'qteTotale' => $qteTotale, 'prixTotal' => $prixTotal]);
-    }
-
-    /**
-     * @Route(
-     *     "/remove_panier/{id}",
-     *      name="remove_panier"
-     * )
-     */
-    public function supprimerPanierAction($id): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        //On récupère l'utilisateur global de la base et son panier:
-        $userLogin = $this->getParameter('login');
-        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
-        /** @var Utilisateurs $user */
-        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
-        $paniers = $user->getPaniers();
-
-        //On recherche le panier à supprimer:
-        foreach($paniers as $panier)
-        {
-            if($panier->getId() == $id)
-            {
-                $panierToDelete = $panier->getId();
-                break;
-            }
-        }
-
-        //On récupère modifie la quantité du produit correspondant dans la base du magasin:
-        $produitsRepository = $em->getRepository('App\Entity\Produits');
-        /** @var Produits $produit */
-        $produit = $produitsRepository->find($id);
-        dump($panier);
-        $produit->setQte($produit->getQte() + $panier->getQte());
-
-        //On supprime le panier:
-        $em->persist($panier);
-        $em->remove($panier);
-        $em->flush();
-
-        return $this->redirectToRoute("clients_panier");
     }
 }
