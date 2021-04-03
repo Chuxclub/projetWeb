@@ -30,10 +30,12 @@ class VisiteursController extends AbstractController
 
         $form = $this->createForm(CreateAccountType::class, $newUser);
         $form->add('send', SubmitType::class, ['label' => 'create account']);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
+                $em->persist($newUser);
                 $em->flush();
                 $this->addFlash('info', "New account created");
                 return $this->redirectToRoute('main_index');

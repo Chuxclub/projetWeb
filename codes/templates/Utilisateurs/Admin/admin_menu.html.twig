@@ -1,7 +1,7 @@
 {% block menu %}
     <a href="{{ path("utilisateurs_deconnexion") }}">déconnexion</a> </br>
-    <a href="">page d'accueil</a> </br>
-    <a href="/create_customer_account">gérer clients</a></br>
+    <a href="{{ path("main_index") }}">page d'accueil</a> </br>
+    <a href="{{ path("delete_account") }}">gérer clients</a></br>
     <a href="">ajouter un produit</a> </br>
     <a href="https://fr.wikipedia.org/wiki/Amour_et_Amnésie">wikipédia</a> </br>
 {% endblock %}

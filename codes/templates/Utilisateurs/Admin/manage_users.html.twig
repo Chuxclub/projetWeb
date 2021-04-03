@@ -1,1 +1,17 @@
-{{ form(myform) }}
+{% block content %}
+
+    {% for user in Utilisateurs %}
+
+    <p>
+        {{ user.id }},
+        {{ user.login }},
+        {{ user.mdp }},
+        {{ user.nom }},
+        {{ user.prenom }},
+        {{ user.datN }},
+        {{ user.isAdmin }}
+    </p>
+
+    {% endfor %}
+
+{% endblock %}
