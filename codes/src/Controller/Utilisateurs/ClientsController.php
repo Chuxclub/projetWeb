@@ -6,14 +6,14 @@ namespace App\Controller\Utilisateurs;
 
 use App\Entity\Panier;
 use App\Entity\Produits;
-use App\Entity\Utilisateurs;
 use App\Form\ClientProfilType;
+use App\Service\GlobalUser;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,23 +22,25 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ClientsController extends AbstractController
 {
+    private $em;
+    private $user;
+
+    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+        $this->user = $globalUser->getGlobalUser();
+    }
+
     /**
      * @Route(
      *      "/editProfil",
      *      name="clients_editProfil"
      * )
      */
-    public function editProfil(Request $request): Response
+    public function editProfil(Request $request, GlobalUser $globalUser): Response
     {
-        //On récupère l'utilisateur global de la base:
-        $userLogin = $this->getParameter('login');
-        $em = $this->getDoctrine()->getManager();
-        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
-        /** @var Utilisateurs $user */
-        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
-
         //On crée le formulaire:
-        $form = $this->createForm(ClientProfilType::class, $user);
+        $form = $this->createForm(ClientProfilType::class, $this->user);
         $form->add('send', SubmitType::class, ['label' => 'Editer le Profil']);
 
         //On gère le formulaire:
@@ -46,7 +48,7 @@ class ClientsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid())
         {
             try {
-                $em->flush();
+                $this->em->flush();
                 $this->addFlash('info', "Your profile has been edited!");
                 return $this->redirectToRoute('main_index');
             }
@@ -72,36 +74,27 @@ class ClientsController extends AbstractController
      */
     public function contenuPanierAction(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
-        //On récupère l'utilisateur global de la base et ses paniers:
-        $userLogin = $this->getParameter('login');
-        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
-        /** @var Utilisateurs $user */
-        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
-        $paniers = $user->getPaniers();
-
+        $paniers = $this->user->getPaniers();
         return $this->render('Utilisateurs/Client/basket.html.twig', ['paniers' => $paniers]);
     }
 
-    private function supprimerPanier($em, $panierToDelete)
+    private function supprimerPanier($panierToDelete)
     {
-        //On supprime le panier:
-        $em->persist($panierToDelete);
-        $em->remove($panierToDelete);
-        $em->flush();
+        $this->em->persist($panierToDelete);
+        $this->em->remove($panierToDelete);
+        $this->em->flush();
     }
 
-    private function supprimerPanierBD($em, $idProduit, $panierToDelete)
+    private function supprimerPanierBD($idProduit, $panierToDelete)
     {
         //On récupère modifie la quantité du produit correspondant dans la base du magasin:
-        $produitsRepository = $em->getRepository('App\Entity\Produits');
+        $produitsRepository = $this->em->getRepository('App\Entity\Produits');
         /** @var Produits $produit */
         $produit = $produitsRepository->find($idProduit);
         $produit->setQte($produit->getQte() + $panierToDelete->getQte());
 
         //On supprime le panier:
-        $this->supprimerPanier($em, $panierToDelete);
+        $this->supprimerPanier($panierToDelete);
     }
 
     /**
@@ -112,19 +105,13 @@ class ClientsController extends AbstractController
      */
     public function acheterAction(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         //On récupère l'utilisateur global de la base et son panier:
-        $userLogin = $this->getParameter('login');
-        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
-        /** @var Utilisateurs $user */
-        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
-        $paniers = $user->getPaniers();
+        $paniers = $this->user->getPaniers();
 
         //On supprime tout:
         $paniersLen = $paniers->count();
         for($i = 0; $i < $paniersLen; $i++)
-            $this->supprimerPanier($em, $paniers[$i]);
+            $this->supprimerPanier($paniers[$i]);
 
         //On redirige:
         return $this->redirectToRoute("clients_panier");
@@ -138,19 +125,13 @@ class ClientsController extends AbstractController
      */
     public function viderPanierAction(): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
         //On récupère l'utilisateur global de la base et son panier:
-        $userLogin = $this->getParameter('login');
-        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
-        /** @var Utilisateurs $user */
-        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
-        $paniers = $user->getPaniers();
+        $paniers = $this->user->getPaniers();
 
         //On supprime tout:
         $paniersLen = $paniers->count();
         for($i = 0; $i < $paniersLen; $i++)
-            $this->supprimerPanierBD($em, $paniers[$i]->getProduit()->getId(), $paniers[$i]);
+            $this->supprimerPanierBD($paniers[$i]->getProduit()->getId(), $paniers[$i]);
 
         //On redirige:
         return $this->redirectToRoute("clients_panier");
@@ -164,22 +145,13 @@ class ClientsController extends AbstractController
      */
     public function supprimerPanierAction($idProduit): Response
     {
-        $em = $this->getDoctrine()->getManager();
-
-        //On récupère l'utilisateur global de la base et ses paniers:
-        $userLogin = $this->getParameter('login');
-        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
-        /** @var Utilisateurs $user */
-        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
-        $paniers = $user->getPaniers();
-
         //On recherche le panier à supprimer:
-        $paniersRepository = $em->getRepository('App:Panier');
+        $paniersRepository = $this->em->getRepository('App:Panier');
         /** @var Panier $panier */
-        $panierToDelete = $paniersRepository->findOneBy(['utilisateur' => $user, 'produit' => $idProduit]);
+        $panierToDelete = $paniersRepository->findOneBy(['utilisateur' => $this->user, 'produit' => $idProduit]);
 
         //On supprime:
-        $this->supprimerPanierBD($em, $idProduit, $panierToDelete);
+        $this->supprimerPanierBD($idProduit, $panierToDelete);
 
         //On redirige:
         return $this->redirectToRoute("clients_panier");

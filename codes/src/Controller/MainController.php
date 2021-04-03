@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Produits;
-use App\Entity\Utilisateurs;
+use App\Service\GlobalUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,19 +22,7 @@ class MainController extends AbstractController
         return $this->render('Layouts/index.html.twig');
     }
 
-    public function getGlobalUser(): ?Utilisateurs
-    {
-        $userLogin = $this->getParameter('login');
-
-        $em = $this->getDoctrine()->getManager();
-        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
-
-        /** @var Utilisateurs $user */
-        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
-        return $user;
-    }
-
-    public function getMenu(): Response
+    public function getMenu(GlobalUser $user): Response
     {
         $em = $this->getDoctrine()->getManager();
         $produitsRepository = $em->getRepository('App:Produits');
@@ -45,13 +33,13 @@ class MainController extends AbstractController
         for($i = 0; $i < count($produits); $i++)
             $totalProduits += $produits[$i]->getQte();
 
-        $args = array('totalProduits' => $totalProduits, 'user' => $this->getGlobalUser());
+        $args = array('totalProduits' => $totalProduits, 'user' => $user->getGlobalUser());
         return $this->render('Layouts/menu.html.twig', $args);
     }
 
-    public function getHeader(): Response
+    public function getHeader(GlobalUser $user): Response
     {
-        $args = array('user' => $this->getGlobalUser());
+        $args = array('user' => $user->getGlobalUser());
         return $this->render('Layouts/header.html.twig', $args);
     }
 
