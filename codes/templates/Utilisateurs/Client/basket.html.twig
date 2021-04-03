@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Contenu de votre panier</h1>
 
-    <form action="{{ path("update_panier") }}" method="post">
+
     <p>
     <table style="border:solid; border-collapse : collapse">
         <tr>
@@ -19,7 +19,10 @@
                 <td style="border:solid";>{{ produit[1] }}</td> <!-- prix unitaire -->
                 <td style="border:solid";>{{ produit[2] }}</td> <!-- qte -->
                 <td style="border:solid";>{{ produit[3] }}</td> <!-- prix commande -->
-                <td><input type="button" name="{{ produit[4] }}" value="Supprimer" /></td> <!-- id produit -->
+                <!-- id produit -->
+                <form action="{{ path("remove_panier", {'id': produit[4]}) }}" method="post">
+                    <td><input type="submit" name="supprimer" value="Supprimer" /></td>
+                </form>
             </tr>
         {% endfor %}
         <tr>
@@ -36,5 +39,4 @@
         </tr>
     </table>
     </p>
-    </form>
 {% endblock %}

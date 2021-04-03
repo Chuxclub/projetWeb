@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -68,7 +69,6 @@ class ClientsController extends AbstractController
      *      name="clients_panier"
      * )
      */
-    //TODO: La vue et l'action doivent être adaptée à l'objectif de l'action
     public function contenuPanierAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
@@ -110,11 +110,38 @@ class ClientsController extends AbstractController
 
     /**
      * @Route(
-     *      name="update_panier"
+     *     "/remove_panier/{id}",
+     *      name="remove_panier"
      * )
      */
-    public function updatePanierAction(): Response
+    public function supprimerPanierAction($id): Response
     {
+        $em = $this->getDoctrine()->getManager();
+
+        //On récupère l'utilisateur global de la base et son panier:
+        $userLogin = $this->getParameter('login');
+        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
+        /** @var Utilisateurs $user */
+        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
+        $paniers = $user->getPaniers();
+
+        //On supprime:
+        foreach($paniers as $panier)
+        {
+            if($panier->getId() == $id)
+            {
+                $panierToDelete = $panier->getId();
+                break;
+            }
+        }
+
+        if(is_null($panier))
+            throw new NotFoundHttpException();
+
+        $em->persist($panier);
+        $em->remove($panier);
+        $em->flush();
+
         return $this->redirectToRoute("clients_panier");
     }
 }
