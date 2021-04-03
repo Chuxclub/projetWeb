@@ -1,16 +1,18 @@
+{% extends "level2.html.twig" %}
+
 {% block content %}
 
-    {% for user in Utilisateurs %}
+    {% for user in users %}
 
-    <p>
-        {{ user.id }},
-        {{ user.login }},
-        {{ user.mdp }},
-        {{ user.nom }},
-        {{ user.prenom }},
-        {{ user.datN }},
-        {{ user.isAdmin }}
-    </p>
+        <div>
+            {{ user.id }},
+            {{ user.login }}
+            {{ user.nom }}
+            {{ user.prenom }}
+
+            {{ user.isAdmin }}
+            <a href="{{ path("delete_account", {"id":user.id}) }}">Delete</a>
+        </div>
 
     {% endfor %}
 
