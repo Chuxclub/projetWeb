@@ -3,6 +3,7 @@
 {% block content %}
     <h1>Liste des produits de notre magasin</h1>
 
+    <form action="{{ path("produits_ajoutPanier") }}" method="post">
     <p>
     <table style="border:solid; border-collapse : collapse">
     <tr>
@@ -17,15 +18,16 @@
                 <td style="border:solid";>{{ produit.prixUnitaire }}</td>
                 <td style="border:solid";>{{ produit.qte }}</td>
                 <td style="border:solid";>
-                    <select>
+                    <select name="{{ produit.id }}">
                         {% for i in 0..produit.qte %}
-                            <option>{{ i }}</option>
+                            <option value="{{ i }}">{{ i }}</option>
                         {% endfor %}
                     </select>
                 </td>
             </tr>
         {% endfor %}
-    <tr><td colspan="4"><input type="button" value="Ajouter au Panier" /></td></tr>
+    <tr><td colspan="4"><input type="submit" value="Ajouter au Panier"/></td></tr>
     </table>
     </p>
+    </form>
 {% endblock %}

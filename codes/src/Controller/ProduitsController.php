@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Panier;
 use App\Entity\Produits;
 use App\Service\GlobalUser;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,7 +41,6 @@ class ProduitsController extends AbstractController
                 ->setQte(1);
         $this->em->persist($product);
         $this->em->flush();
-        dump($product);
 
         return new Response("<body>Product all good!</body>");
     }
@@ -57,5 +57,44 @@ class ProduitsController extends AbstractController
         $produits = $produitsRepository->findAll();
 
         return $this->render('Produits/product_list.html.twig', ['produits' => $produits]);
+    }
+
+    /**
+     * @Route(
+     *     "/ajoutPanier",
+     *     name="produits_ajoutPanier"
+     * )
+     */
+    public function ajoutPanierAction(): Response
+    {
+        $produitsRepository = $this->em->getRepository('App:Produits');
+        $paniersRepository = $this->em->getRepository('App:Panier');
+
+        foreach($_POST as $idProduit => $qteProduit)
+        {
+            if($qteProduit > 0) {
+                //On gère les produits dans la BD:
+                $produit = $produitsRepository->find($idProduit);
+                $produit->setQte($produit->getQte() - $qteProduit);
+
+                //On gère les paniers de l'utilisateur:
+                /** @var Panier $panierToAdd */
+                $panierToAdd = $paniersRepository->findOneBy(['utilisateur' => $this->user, 'produit' => $idProduit]);
+                if (is_null($panierToAdd)) {
+                    $panier = new Panier();
+                    /** @var Produits $produit */
+
+                    $panier->setUtilisateur($this->user)
+                        ->setQte($qteProduit)
+                        ->setProduit($produit);
+
+                    $this->em->persist($panier);
+                } else
+                    $panierToAdd->setQte($panierToAdd->getQte() + $qteProduit);
+                $this->em->flush();
+            }
+        }
+
+        return $this->redirectToRoute("produits_liste");
     }
 }
