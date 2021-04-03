@@ -4,6 +4,7 @@
 namespace App\Controller\Utilisateurs;
 
 
+use App\Entity\Panier;
 use App\Entity\Produits;
 use App\Entity\Utilisateurs;
 use App\Form\ClientProfilType;
@@ -80,13 +81,10 @@ class ClientsController extends AbstractController
         $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
         $paniers = $user->getPaniers();
 
-        //On récupère les produits de la base:
-        $produitsRepository = $em->getRepository('App\Entity\Produits');
-        /** @var Produits[] $produits */
-        $produits = $produitsRepository->findAll();
+        return $this->render('Utilisateurs/Client/basket.html.twig', ['paniers' => $paniers]);
 
         //On fait la jointure:
-        $jointure = [];
+        /*$jointure = [];
         $qteTotale = 0;
         $prixTotal = 0;
 
@@ -103,10 +101,10 @@ class ClientsController extends AbstractController
                 ];
             $qteTotale += $paniers[$i]->getQte();
             $prixTotal += $prixCommande;
-        }
+        }*/
 
-        return $this->render('Utilisateurs/Client/basket.html.twig',
-            ['jointure' => $jointure, 'qteTotale' => $qteTotale, 'prixTotal' => $prixTotal]);
+        /*return $this->render('Utilisateurs/Client/basket.html.twig',
+            ['jointure' => $jointure, 'qteTotale' => $qteTotale, 'prixTotal' => $prixTotal]);*/
     }
 
     /**
@@ -127,14 +125,9 @@ class ClientsController extends AbstractController
         $paniers = $user->getPaniers();
 
         //On recherche le panier à supprimer:
-        foreach($paniers as $panier)
-        {
-            if($panier->getProduit()->getId() == $idProduit)
-            {
-                $panierToDelete = $panier;
-                break;
-            }
-        }
+        $paniersRepository = $em->getRepository('App:Panier');
+        /** @var Panier $panier */
+        $panierToDelete = $paniersRepository->findOneBy(['utilisateur' => $user, 'produit' => $idProduit]);
 
         //On supprime:
         $this->supprimerPanier($em, $idProduit, $panierToDelete);
