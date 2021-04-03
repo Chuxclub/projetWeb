@@ -111,11 +111,11 @@ class ClientsController extends AbstractController
 
     /**
      * @Route(
-     *     "/remove_panier/{id}",
+     *     "/remove_panier/{idProduit}",
      *      name="remove_panier"
      * )
      */
-    public function supprimerPanierAction($id): Response
+    public function supprimerPanierAction($idProduit): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -129,25 +129,57 @@ class ClientsController extends AbstractController
         //On recherche le panier à supprimer:
         foreach($paniers as $panier)
         {
-            if($panier->getId() == $id)
+            if($panier->getProduit()->getId() == $idProduit)
             {
-                $panierToDelete = $panier->getId();
+                $panierToDelete = $panier;
                 break;
             }
         }
 
+        //On supprime:
+        $this->supprimerPanier($em, $idProduit, $panierToDelete);
+
+        //On redirige:
+        return $this->redirectToRoute("clients_panier");
+    }
+
+    /**
+     * @Route(
+     *     "/empty_panier",
+     *      name="empty_panier"
+     * )
+     */
+    public function viderPanierAction(): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        //On récupère l'utilisateur global de la base et son panier:
+        $userLogin = $this->getParameter('login');
+        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
+        /** @var Utilisateurs $user */
+        $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
+        $paniers = $user->getPaniers();
+
+        //On supprime tout:
+        $paniersLen = $paniers->count();
+        for($i = 0; $i < $paniersLen; $i++)
+            $this->supprimerPanier($em, $paniers[$i]->getProduit()->getId(), $paniers[$i]);
+
+        //On redirige:
+        return $this->redirectToRoute("clients_panier");
+    }
+
+    private function supprimerPanier($em, $idProduit, $panierToDelete)
+    {
         //On récupère modifie la quantité du produit correspondant dans la base du magasin:
         $produitsRepository = $em->getRepository('App\Entity\Produits');
         /** @var Produits $produit */
-        $produit = $produitsRepository->find($id);
-        dump($panier);
-        $produit->setQte($produit->getQte() + $panier->getQte());
+        $produit = $produitsRepository->find($idProduit);
+        $produit->setQte($produit->getQte() + $panierToDelete->getQte());
 
         //On supprime le panier:
-        $em->persist($panier);
-        $em->remove($panier);
+        $em->persist($panierToDelete);
+        $em->remove($panierToDelete);
         $em->flush();
-
-        return $this->redirectToRoute("clients_panier");
     }
 }

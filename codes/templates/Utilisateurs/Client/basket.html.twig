@@ -19,8 +19,7 @@
                 <td style="border:solid";>{{ produit[1] }}</td> <!-- prix unitaire -->
                 <td style="border:solid";>{{ produit[2] }}</td> <!-- qte -->
                 <td style="border:solid";>{{ produit[3] }}</td> <!-- prix commande -->
-                <!-- id produit -->
-                <form action="{{ path("remove_panier", {'id': produit[4]}) }}" method="post">
+                <form action="{{ path("remove_panier", {'idProduit': produit[4]}) }}" method="post">
                     <td><input type="submit" name="supprimer" value="Supprimer" /></td>
                 </form>
             </tr>
@@ -35,7 +34,9 @@
         <tr>
             <td colspan="3"></td>
             <td><input type="button" value="Acheter" /></td>
-            <td><input type="button" value="Vider" /></td>
+            <form action="{{ path("empty_panier") }}" method="post">
+                <td><input type="submit" name="vider" value="Vider" /></td>
+            </form>
         </tr>
     </table>
     </p>
