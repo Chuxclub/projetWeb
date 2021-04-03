@@ -43,7 +43,7 @@ class PanierController extends AbstractController
         $panier = new Panier();
         $panier->setUtilisateur($user)
             ->setProduit($produit)
-            ->setQte(15);
+            ->setQte(3);
         $em->persist($panier);
         $em->flush();
         dump($panier);

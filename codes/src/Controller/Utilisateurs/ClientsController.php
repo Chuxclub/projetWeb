@@ -89,6 +89,7 @@ class ClientsController extends AbstractController
         $jointure = [];
         $qteTotale = 0;
         $prixTotal = 0;
+
         for($i = 0; $i < $paniers->count(); $i++)
         {
             $prixCommande = $paniers[$i]->getProduit()->getPrixUnitaire()*$paniers[$i]->getQte();
@@ -96,7 +97,7 @@ class ClientsController extends AbstractController
                 [
                     $paniers[$i]->getProduit()->getLibelle(),
                     $paniers[$i]->getProduit()->getPrixUnitaire(),
-                    $paniers[$i]->getProduit()->getQte(),
+                    $paniers[$i]->getQte(),
                     $prixCommande,
                     $paniers[$i]->getProduit()->getId()
                 ];
@@ -125,7 +126,7 @@ class ClientsController extends AbstractController
         $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
         $paniers = $user->getPaniers();
 
-        //On supprime:
+        //On recherche le panier à supprimer:
         foreach($paniers as $panier)
         {
             if($panier->getId() == $id)
@@ -135,9 +136,14 @@ class ClientsController extends AbstractController
             }
         }
 
-        if(is_null($panier))
-            throw new NotFoundHttpException();
+        //On récupère modifie la quantité du produit correspondant dans la base du magasin:
+        $produitsRepository = $em->getRepository('App\Entity\Produits');
+        /** @var Produits $produit */
+        $produit = $produitsRepository->find($id);
+        dump($panier);
+        $produit->setQte($produit->getQte() + $panier->getQte());
 
+        //On supprime le panier:
         $em->persist($panier);
         $em->remove($panier);
         $em->flush();
