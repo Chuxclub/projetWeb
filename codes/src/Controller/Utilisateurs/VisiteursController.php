@@ -8,12 +8,11 @@ use App\Entity\Utilisateurs;
 use App\Service\GlobalUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Form\CreateAccountType;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @package App\Controller

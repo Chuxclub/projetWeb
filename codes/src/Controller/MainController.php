@@ -2,13 +2,10 @@
 
 namespace App\Controller;
 
-<<<<<<< HEAD
-use App\Entity\Utilisateurs;
-=======
+
 use App\Entity\Produits;
 use App\Service\GlobalUser;
 use Doctrine\ORM\EntityManagerInterface;
->>>>>>> 8835208b3f3c66c61e1793b1a4ab87c7a702cfb1
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,9 +35,6 @@ class MainController extends AbstractController
 
     public function getMenu(): Response
     {
-<<<<<<< HEAD
-        $args = array('user' => $this->getGlobalUser());
-=======
         $produitsRepository = $this->em->getRepository('App:Produits');
         /** @var Produits[] $produits */
         $produits = $produitsRepository->findAll();
@@ -50,7 +44,6 @@ class MainController extends AbstractController
             $totalProduits += $produits[$i]->getQte();
 
         $args = array('totalProduits' => $totalProduits, 'user' => $this->user);
->>>>>>> 8835208b3f3c66c61e1793b1a4ab87c7a702cfb1
         return $this->render('Layouts/menu.html.twig', $args);
     }
 

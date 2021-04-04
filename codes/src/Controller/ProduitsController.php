@@ -44,8 +44,6 @@ class ProduitsController extends AbstractController
 
         return new Response("<body>Product all good!</body>");
     }
-<<<<<<< HEAD
-=======
 
     /**
      * @Route(
@@ -99,5 +97,4 @@ class ProduitsController extends AbstractController
 
         return $this->redirectToRoute("produits_liste");
     }
->>>>>>> 8835208b3f3c66c61e1793b1a4ab87c7a702cfb1
 }

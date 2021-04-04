@@ -4,12 +4,8 @@
 namespace App\Controller\Utilisateurs;
 
 
-<<<<<<< HEAD
-use App\Entity\Utilisateurs;
-=======
 use App\Entity\Panier;
 use App\Entity\Produits;
->>>>>>> 8835208b3f3c66c61e1793b1a4ab87c7a702cfb1
 use App\Form\ClientProfilType;
 use App\Service\GlobalUser;
 use Doctrine\ORM\EntityManagerInterface;
@@ -68,8 +64,6 @@ class ClientsController extends AbstractController
         $args = array('myform' => $form->createView());
         return $this->render('Utilisateurs/Client/manage_profil.html.twig', $args);
     }
-<<<<<<< HEAD
-=======
 
 
     /**
@@ -162,5 +156,4 @@ class ClientsController extends AbstractController
         //On redirige:
         return $this->redirectToRoute("clients_panier");
     }
->>>>>>> 8835208b3f3c66c61e1793b1a4ab87c7a702cfb1
 }

@@ -4,15 +4,13 @@
 namespace App\Controller;
 
 
-<<<<<<< HEAD
-=======
 use App\Entity\Panier;
 use App\Entity\Produits;
 use App\Entity\Utilisateurs;
 use App\Service\GlobalUser;
 use Doctrine\ORM\EntityManagerInterface;
->>>>>>> 8835208b3f3c66c61e1793b1a4ab87c7a702cfb1
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -21,9 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PanierController extends AbstractController
 {
-<<<<<<< HEAD
-
-=======
     private $em;
     private $user;
 
@@ -63,5 +58,4 @@ class PanierController extends AbstractController
 
         return new Response("<body>Basket all good!</body>");
     }
->>>>>>> 8835208b3f3c66c61e1793b1a4ab87c7a702cfb1
 }
