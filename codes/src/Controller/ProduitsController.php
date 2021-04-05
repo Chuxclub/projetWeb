@@ -6,9 +6,13 @@ namespace App\Controller;
 
 use App\Entity\Panier;
 use App\Entity\Produits;
+use App\Entity\Utilisateurs;
+use App\Form\AddProductType;
 use App\Service\GlobalUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -96,5 +100,32 @@ class ProduitsController extends AbstractController
         }
 
         return $this->redirectToRoute("produits_liste");
+    }
+
+    /**
+     * @Route("/addProduct", name="add_product")
+     */
+    public function addProductAction(Request $request): Response
+    {
+        $product = new Produits();
+
+        $form = $this->createForm(AddProductType::class, $product);
+        $form->add('send', SubmitType::class, ['label' => 'add a new product']);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $this->em->persist($product);
+            $this->em->flush();
+            $this->addFlash('info', "New product added");
+            return $this->redirectToRoute('main_index');
+        }
+
+        if ($form->isSubmitted())
+            $this->addFlash('info', 'Form not correct');
+
+        $args = array('myform' => $form->createView());
+        return $this->render('Utilisateurs/Admin/add_product.html.twig', $args);
     }
 }

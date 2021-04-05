@@ -43,9 +43,17 @@ class AdminController extends AbstractController
      */
     public function deleteAccountAction(Utilisateurs $user): Response
     {
-        $this->em->remove($user);
-        $this->em->flush();
+        if ($user === $this->user)
+        {
+            $this->addFlash('info', "Sorry, you can't delete yourself");
+        }
+        else
+            {
+            $this->em->remove($user);
+            $this->em->flush();
 
+            $this->addFlash('info', "Customer deleted");
+            }
         return $this->redirectToRoute("main_index");
     }
 }

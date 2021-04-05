@@ -62,7 +62,7 @@ class VisiteursController extends AbstractController
      *     name="utilisateurs_connexion"
      * )
      */
-    public function disconnectAction(): Response
+    public function connectAction(): Response
     {
         $this->addFlash('info', "You will soon be able to connect !");
         return $this->redirectToRoute("main_index");
