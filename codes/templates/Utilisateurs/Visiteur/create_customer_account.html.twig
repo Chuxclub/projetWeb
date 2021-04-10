@@ -1,5 +1,12 @@
 {% extends "level2.html.twig" %}
 
 {% block content %}
-{{ form(myform) }}
+    <form>
+    <div>
+        {{ form_row(myform.login) }}
+        {{ form_row(myform.nom) }}
+        {{ form_row(myform.prenom) }}
+        {{ form_row(myform.mdp) }}
+    </div>
+    </form>
 {% endblock %}

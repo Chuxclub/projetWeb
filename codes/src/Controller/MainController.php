@@ -5,7 +5,9 @@ namespace App\Controller;
 
 use App\Entity\Produits;
 use App\Service\GlobalUser;
+use App\Service\SecretService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,8 +30,10 @@ class MainController extends AbstractController
     /**
      * @Route("", name="main_index")
      */
-    public function indexAction(): Response
+    public function indexAction(SecretService $secretService): Response
     {
+        $message = $secretService->getReverseMessage();
+        $this->addFlash('info', $message);
         return $this->render('Layouts/index.html.twig');
     }
 

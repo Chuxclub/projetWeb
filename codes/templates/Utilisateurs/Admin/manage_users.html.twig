@@ -9,7 +9,7 @@
             {{ user.login }}
             {{ user.nom }}
             {{ user.prenom }}
-
+            {{ user.mdp }}
             {{ user.isAdmin }}
             <a href="{{ path("delete_account", {"id":user.id}) }}">Delete</a>
         </div>
