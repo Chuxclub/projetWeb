@@ -29,6 +29,7 @@ class ClientsController extends AbstractController
     {
         $this->em = $entityManager;
         $this->user = $globalUser->getGlobalUser();
+        $globalUser->checkUser($this->user, "client");
     }
 
     /**
