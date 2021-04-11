@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller\Utilisateurs;
-
 
 use App\Entity\Utilisateur;
 use App\Service\GlobalUserService;
@@ -34,7 +32,7 @@ class AdminsController extends AbstractController
     {
         $users = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
 
-        return $this->render('Utilisateur/Admin/manage_users.html.twig', [
+        return $this->render('Utilisateurs/Admins/manage_users.html.twig', [
             'users' => $users,
         ]);
     }

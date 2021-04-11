@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller\Utilisateurs;
-
 
 use App\Entity\Utilisateur;
 use App\Service\GlobalUserService;
@@ -30,7 +28,7 @@ class UtilisateursController extends AbstractController
 
     /**
      * @Route(
-     *     "/ajouterendur",
+     *     "/ajouterEnDur",
      *     name="utilisateurs_ajouterendur"
      * )
      */

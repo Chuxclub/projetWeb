@@ -54,7 +54,7 @@ class VisiteursController extends AbstractController
             $this->addFlash('info', 'Form not correct');
 
         $args = array('myform' => $form->createView());
-        return $this->render('Utilisateur/Visiteur/create_customer_account.html.twig', $args);
+        return $this->render('Utilisateurs/Visiteurs/create_customer_account.html.twig', $args);
     }
 
     /**

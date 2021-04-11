@@ -117,7 +117,7 @@ class PaniersController extends AbstractController
     public function contenuPanierAction(): Response
     {
         $paniers = $this->user->getPaniers();
-        return $this->render('Utilisateur/Client/basket.html.twig', ['paniers' => $paniers]);
+        return $this->render('Utilisateurs/Clients/basket.html.twig', ['paniers' => $paniers]);
     }
 
 

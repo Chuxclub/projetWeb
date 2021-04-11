@@ -1,9 +1,9 @@
 {% block header %}
     {% if user is null %}
-        {% include "Utilisateurs/Visiteur/visitor_header.html.twig" %}
+        {% include "Utilisateurs/Visiteurs/visitor_header.html.twig" %}
     {% elseif user.isAdmin %}
-        {% include "Utilisateurs/Admin/admin_header.html.twig" %}
+        {% include "Utilisateurs/Admins/admin_header.html.twig" %}
     {% else %}
-        {% include "Utilisateurs/Client/customer_header.html.twig" %}
+        {% include "Utilisateurs/Clients/customer_header.html.twig" %}
     {% endif %}
 {% endblock %}

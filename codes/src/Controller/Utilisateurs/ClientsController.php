@@ -65,6 +65,6 @@ class ClientsController extends AbstractController
             $this->addFlash('error', 'Error in form');
 
         $args = array('myform' => $form->createView());
-        return $this->render('Utilisateur/Client/manage_profil.html.twig', $args);
+        return $this->render('Utilisateurs/Clients/manage_profil.html.twig', $args);
     }
 }

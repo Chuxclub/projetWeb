@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Entity\Panier;
 use App\Entity\Produit;
@@ -38,7 +36,7 @@ class ProduitsController extends AbstractController
 
     /**
      * @Route(
-     *     "/ajouterendur",
+     *     "/ajouterEnDur",
      *     name="produits_ajouterendur"
      * )
      */
@@ -85,7 +83,7 @@ class ProduitsController extends AbstractController
             $this->addFlash('info', 'Form not correct');
 
         $args = array('myform' => $form->createView());
-        return $this->render('Utilisateur/Admin/add_product.html.twig', $args);
+        return $this->render('Utilisateur/Admins/add_product.html.twig', $args);
     }
 
 

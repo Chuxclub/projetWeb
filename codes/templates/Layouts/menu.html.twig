@@ -2,10 +2,10 @@
     <div style="padding-bottom: 10px">There are a total of
         <span style="font-weight: bold; color: blue">{{ totalProduits }}</span> video games in our store!</div>
     {% if user is null %}
-        {% include "Utilisateurs/Visiteur/visitor_menu.html.twig" %}
+        {% include "Utilisateurs/Visiteurs/visitor_menu.html.twig" %}
     {% elseif user.isAdmin %}
-        {% include "Utilisateurs/Admin/admin_menu.html.twig" %}
+        {% include "Utilisateurs/Admins/admin_menu.html.twig" %}
     {% else %}
-        {% include "Utilisateurs/Client/customer_menu.html.twig" %}
+        {% include "Utilisateurs/Clients/customer_menu.html.twig" %}
     {% endif %}
 {% endblock %}
