@@ -2,3 +2,16 @@ Dans codes/.env:
 	DATABASE_URL="sqlite:///%kernel.project_dir%/sqlite/data.db"
 	# DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7"
 	# DATABASE_URL="postgresql://db_user:db_password@127.0.0.1:5432/db_name?serverVersion=13&charset=utf8"
+	
+Dans services.yaml:
+	parameters:
+    		login: "dummy"
+    		
+Dans config/packages/swiftmailer.yaml:
+     transport: gmail
+     username: "florian.legendre.corby@gmail.com"
+     password: "monSuperMdp"
+     # Remarque, sous Google il faut autoriser les accès par des applications moins sécurisées, cf.   Lien ci-dessous
+     # => https://support.google.com/accounts/answer/6010255#zippy=%2Csi-le-param%C3%A8tre-autoriser-les-applications-moins-s%C3%A9curis%C3%A9es-est-activ%C3%A9-pour-votre-compte
+#    url: '%env(MAILER_URL)%'
+#    spool: { type: 'memory' }
