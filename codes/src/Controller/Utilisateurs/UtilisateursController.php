@@ -22,6 +22,8 @@ class UtilisateursController extends AbstractController
 
     public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
     {
+        //Peu importe l'utilisateur, ils doivent pouvoir accéder à l'ensemble des méthodes de ce
+        //contrôleur donc pas de protection:
         $this->em = $entityManager;
         $this->user = $globalUser->getGlobalUser();
     }

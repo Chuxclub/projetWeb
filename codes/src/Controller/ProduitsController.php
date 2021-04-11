@@ -31,6 +31,10 @@ class ProduitsController extends AbstractController
         $this->user = $globalUser->getGlobalUser();
     }
 
+    /* =============================================================
+     *                          AJOUTS
+     * ============================================================= */
+
     /**
      * @Route(
      *     "/ajouterendur",
@@ -39,6 +43,9 @@ class ProduitsController extends AbstractController
      */
     public function produitsAjouterEnDurAction(): Response
     {
+        //Cette action servait essentiellement au développement du site (peupler la base)
+        //et n'est donc pas protégée car ne correspond à aucun utilisateur du cahier des charges.
+        //On fait donc directement l'action:
         $product = new Produits();
         $product->setLibelle("Zelda Majora's Mask")
                 ->setPrixUnitaire(32)
@@ -50,63 +57,14 @@ class ProduitsController extends AbstractController
     }
 
     /**
-     * @Route(
-     *     "/liste",
-     *     name="produits_liste"
-     * )
-     */
-    public function produitsListerAction(): Response
-    {
-        $produitsRepository = $this->em->getRepository('App\Entity\Produits');
-        $produits = $produitsRepository->findAll();
-
-        return $this->render('Produits/product_list.html.twig', ['produits' => $produits]);
-    }
-
-    /**
-     * @Route(
-     *     "/ajoutPanier",
-     *     name="produits_ajoutPanier"
-     * )
-     */
-    public function ajoutPanierAction(): Response
-    {
-        $produitsRepository = $this->em->getRepository('App:Produits');
-        $paniersRepository = $this->em->getRepository('App:Panier');
-
-        foreach($_POST as $idProduit => $qteProduit)
-        {
-            if($qteProduit > 0) {
-                //On gère les produits dans la BD:
-                $produit = $produitsRepository->find($idProduit);
-                $produit->setQte($produit->getQte() - $qteProduit);
-
-                //On gère les paniers de l'utilisateur:
-                /** @var Panier $panierToAdd */
-                $panierToAdd = $paniersRepository->findOneBy(['utilisateur' => $this->user, 'produit' => $idProduit]);
-                if (is_null($panierToAdd)) {
-                    $panier = new Panier();
-                    /** @var Produits $produit */
-
-                    $panier->setUtilisateur($this->user)
-                        ->setQte($qteProduit)
-                        ->setProduit($produit);
-
-                    $this->em->persist($panier);
-                } else
-                    $panierToAdd->setQte($panierToAdd->getQte() + $qteProduit);
-                $this->em->flush();
-            }
-        }
-
-        return $this->redirectToRoute("produits_liste");
-    }
-
-    /**
      * @Route("/addProduct", name="add_product")
      */
-    public function addProductAction(Request $request): Response
+    public function addProductAction(GlobalUser $globalUser, Request $request): Response
     {
+        //Seuls les admins peuvent avoir accès à cette action:
+        $globalUser->checkUser($this->user, "admin");
+
+        //Si c'est bien un admin, on fait l'action:
         $product = new Produits();
 
         $form = $this->createForm(AddProductType::class, $product);
@@ -127,5 +85,28 @@ class ProduitsController extends AbstractController
 
         $args = array('myform' => $form->createView());
         return $this->render('Utilisateurs/Admin/add_product.html.twig', $args);
+    }
+
+
+    /* =============================================================
+     *                          LECTURE
+     * ============================================================= */
+
+    /**
+     * @Route(
+     *     "/liste",
+     *     name="produits_liste"
+     * )
+     */
+    public function produitsListerAction(GlobalUser $globalUser): Response
+    {
+        //Seuls les clients peuvent avoir accès à cette action:
+        $globalUser->checkUser($this->user, "client");
+
+        //Si c'est bien un client on fait l'action:
+        $produitsRepository = $this->em->getRepository('App\Entity\Produits');
+        $produits = $produitsRepository->findAll();
+
+        return $this->render('Produits/product_list.html.twig', ['produits' => $produits]);
     }
 }

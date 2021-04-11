@@ -23,6 +23,8 @@ class MainController extends AbstractController
 
     public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
     {
+        //Peu importe l'utilisateur, ils doivent pouvoir accéder à l'ensemble des méthodes de ce
+        //contrôleur donc pas de protection:
         $this->em = $entityManager;
         $this->user = $globalUser->getGlobalUser();
     }
@@ -55,14 +57,5 @@ class MainController extends AbstractController
     {
         $args = array('user' => $this->user);
         return $this->render('Layouts/header.html.twig', $args);
-    }
-
-
-    /**
-     * @Route("/basket", name="basket")
-     */
-    public function basketAction(): Response
-    {
-        return $this->render('basket.html.twig');
     }
 }
