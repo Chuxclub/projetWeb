@@ -83,7 +83,7 @@ class ProduitsController extends AbstractController
             $this->addFlash('info', 'Form not correct');
 
         $args = array('myform' => $form->createView());
-        return $this->render('Utilisateur/Admins/add_product.html.twig', $args);
+        return $this->render('Utilisateurs/Admins/add_product.html.twig', $args);
     }
 
 
