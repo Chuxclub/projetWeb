@@ -5,7 +5,7 @@ namespace App\Controller\Utilisateurs;
 
 
 use App\Entity\Utilisateurs;
-use App\Service\GlobalUser;
+use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ class UtilisateursController extends AbstractController
     private $em;
     private $user;
 
-    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    public function __construct(GlobalUserService $globalUser, EntityManagerInterface $entityManager)
     {
         //Peu importe l'utilisateur, ils doivent pouvoir accéder à l'ensemble des méthodes de ce
         //contrôleur donc pas de protection:

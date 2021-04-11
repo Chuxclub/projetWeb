@@ -7,7 +7,7 @@ namespace App\Controller\Utilisateurs;
 use App\Entity\Panier;
 use App\Entity\Produits;
 use App\Form\ClientProfilType;
-use App\Service\GlobalUser;
+use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,7 +25,7 @@ class ClientsController extends AbstractController
     private $em;
     private $user;
 
-    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    public function __construct(GlobalUserService $globalUser, EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
         $this->user = $globalUser->getGlobalUser();
@@ -40,7 +40,7 @@ class ClientsController extends AbstractController
      *      name="clients_editProfil"
      * )
      */
-    public function editProfil(Request $request, GlobalUser $globalUser): Response
+    public function editProfil(Request $request, GlobalUserService $globalUser): Response
     {
         //On crée le formulaire:
         $form = $this->createForm(ClientProfilType::class, $this->user);

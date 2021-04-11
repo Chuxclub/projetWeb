@@ -4,7 +4,8 @@ namespace App\Controller;
 
 
 use App\Entity\Produits;
-use App\Service\GlobalUser;
+use App\Service\GlobalUserService;
+use App\Service\ProduitsService;
 use App\Service\SecretService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -21,7 +22,7 @@ class MainController extends AbstractController
     private $em;
     private $user;
 
-    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    public function __construct(GlobalUserService $globalUser, EntityManagerInterface $entityManager)
     {
         //Peu importe l'utilisateur, ils doivent pouvoir accéder à l'ensemble des méthodes de ce
         //contrôleur donc pas de protection:
@@ -39,17 +40,9 @@ class MainController extends AbstractController
         return $this->render('Layouts/index.html.twig');
     }
 
-    public function getMenu(): Response
+    public function getMenu(ProduitsService $produitsService): Response
     {
-        $produitsRepository = $this->em->getRepository('App:Produits');
-        /** @var Produits[] $produits */
-        $produits = $produitsRepository->findAll();
-
-        $totalProduits = 0;
-        for($i = 0; $i < count($produits); $i++)
-            $totalProduits += $produits[$i]->getQte();
-
-        $args = array('totalProduits' => $totalProduits, 'user' => $this->user);
+        $args = array('totalProduits' => $produitsService->getNbProducts($this->em), 'user' => $this->user);
         return $this->render('Layouts/menu.html.twig', $args);
     }
 

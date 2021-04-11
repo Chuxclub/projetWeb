@@ -7,7 +7,7 @@ namespace App\Controller;
 use App\Entity\Panier;
 use App\Entity\Produits;
 use App\Entity\Utilisateurs;
-use App\Service\GlobalUser;
+use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +22,7 @@ class PanierController extends AbstractController
     private $em;
     private $user;
 
-    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    public function __construct(GlobalUserService $globalUser, EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
         $this->user = $globalUser->getGlobalUser();

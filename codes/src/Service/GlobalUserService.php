@@ -6,7 +6,7 @@ use App\Entity\Utilisateurs;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class GlobalUser extends AbstractController
+class GlobalUserService extends AbstractController
 {
     public function getGlobalUser(): ?Utilisateurs
     {

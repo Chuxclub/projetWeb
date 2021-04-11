@@ -8,7 +8,8 @@ use App\Entity\Panier;
 use App\Entity\Produits;
 use App\Entity\Utilisateurs;
 use App\Form\AddProductType;
-use App\Service\GlobalUser;
+use App\Service\GlobalUserService;
+use App\Service\ProduitsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,7 +26,7 @@ class ProduitsController extends AbstractController
     private $em;
     private $user;
 
-    public function __construct(GlobalUser $globalUser, EntityManagerInterface $entityManager)
+    public function __construct(GlobalUserService $globalUser, EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
         $this->user = $globalUser->getGlobalUser();
@@ -59,7 +60,7 @@ class ProduitsController extends AbstractController
     /**
      * @Route("/addProduct", name="add_product")
      */
-    public function addProductAction(GlobalUser $globalUser, Request $request): Response
+    public function addProductAction(GlobalUserService $globalUser, Request $request): Response
     {
         //Seuls les admins peuvent avoir accès à cette action:
         $globalUser->checkUser($this->user, "admin");
@@ -98,30 +99,16 @@ class ProduitsController extends AbstractController
      *     name="produits_liste"
      * )
      */
-    public function produitsListerAction(GlobalUser $globalUser): Response
+    public function produitsListerAction(GlobalUserService $globalUser, ProduitsService $produitsService): Response
     {
         //Seuls les clients peuvent avoir accès à cette action:
         $globalUser->checkUser($this->user, "client");
 
         //Si c'est bien un client on fait l'action:
-        $produitsRepository = $this->em->getRepository('App\Entity\Produits');
-        $produits = $produitsRepository->findAll();
-
-        return $this->render('Produits/product_list.html.twig', ['produits' => $produits]);
+        return $this->render('Produits/product_list.html.twig',
+                                 ['produits' => $produitsService->getAllProducts($this->em)]);
     }
 
-    public function produitsNombreProduitsAction() : int
-    {
-        $produitsRepository = $this->em->getRepository('App:Produits');
-        /** @var Produits[] $produits */
-        $produits = $produitsRepository->findAll();
-
-        $totalProduits = 0;
-        for($i = 0; $i < count($produits); $i++)
-            $totalProduits += $produits[$i]->getQte();
-
-        return $totalProduits;
-    }
 
     /**
      * @Route(
@@ -129,7 +116,7 @@ class ProduitsController extends AbstractController
      *     name="produits_mail"
      * )
      */
-    public function produitsMailAction(\Swift_Mailer $mailer)
+    public function produitsMailAction(\Swift_Mailer $mailer, ProduitsService $produitsService)
     {
         $message = (new \Swift_Message('Hello Email'))
             ->setFrom('florian-1992@hotmail.fr')
@@ -137,7 +124,7 @@ class ProduitsController extends AbstractController
             ->setBody(
                 $this->renderView(
                     'Produits/product_mail.html.twig',
-                    ['nbProduits' => $this->produitsNombreProduitsAction()]
+                    ['nbProduits' => $produitsService->getNbProducts($this->em)]
                 ),
                 'text/html'
             );
