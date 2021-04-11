@@ -103,7 +103,7 @@ class ProduitsController extends AbstractController
         $globalUser->checkUser($this->user, "client");
 
         //Si c'est bien un client on fait l'action:
-        return $this->render('Produit/product_list.html.twig',
+        return $this->render('Produits/product_list.html.twig',
                                  ['produits' => $produitsService->getAllProducts($this->em)]);
     }
 
@@ -121,7 +121,7 @@ class ProduitsController extends AbstractController
             ->setTo('amandine.fradet@live.fr')
             ->setBody(
                 $this->renderView(
-                    'Produit/product_mail.html.twig',
+                    'Produits/product_mail.html.twig',
                     ['nbProduits' => $produitsService->getNbProducts($this->em)]
                 ),
                 'text/html'
