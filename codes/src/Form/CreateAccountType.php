@@ -4,7 +4,10 @@ namespace App\Form;
 
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,7 +23,7 @@ class CreateAccountType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('dateN',DateType::class, ['label' => 'Date de Naissance'])
-            ->add('isAdmin')
+            ->add('isAdmin', HiddenType::class, ['empty_data' => false])
         ;
     }
 

@@ -39,13 +39,14 @@ class MainController extends AbstractController
 
     public function getMenu(ProduitsService $produitsService): Response
     {
-        $args = array('totalProduits' => $produitsService->getNbProducts($this->em), 'user' => $this->user);
+        $args = ['totalProduits' => $produitsService->getNbProducts($this->em),
+                 'user' => $this->user];
         return $this->render('Layouts/menu.html.twig', $args);
     }
 
     public function getHeader(): Response
     {
-        $args = array('user' => $this->user);
+        $args = ['user' => $this->user];
         return $this->render('Layouts/header.html.twig', $args);
     }
 }

@@ -1,12 +1,18 @@
-{% extends "level2.html.twig" %}
+{% extends "Layouts/level2.html.twig" %}
 
 {% block content %}
-    <form>
-    <div>
-        {{ form_row(myform.login) }}
-        {{ form_row(myform.nom) }}
-        {{ form_row(myform.prenom) }}
-        {{ form_row(myform.mdp) }}
-    </div>
-    </form>
+    {{ form(myform) }}
+{#    {% for msg in app.session.flashBag.get('info') %}#}
+{#        {{ msg }}<br/><br/>#}
+{#    {% endfor %}#}
+
+{#    <form>#}
+{#    <div>#}
+{#        {{ form_row(myform.login) }}#}
+{#        {{ form_row(myform.nom) }}#}
+{#        {{ form_row(myform.prenom) }}#}
+{#        {{ form_row(myform.mdp) }}#}
+{#        {{ form_row(myform.send) }}#}
+{#    </div>#}
+{#    </form>#}
 {% endblock %}
