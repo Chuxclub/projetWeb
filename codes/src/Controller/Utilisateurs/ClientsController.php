@@ -4,8 +4,6 @@
 namespace App\Controller\Utilisateurs;
 
 
-use App\Entity\Panier;
-use App\Entity\Produit;
 use App\Form\ClientProfilType;
 use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
