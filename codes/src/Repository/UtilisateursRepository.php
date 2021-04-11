@@ -48,3 +48,8 @@ class UtilisateursRepository extends ServiceEntityRepository
     }
     */
 }
+
+
+/* ====================================================================================== */
+/* AUTEURS: Amandine Fradet, Florian Legendre                                             */
+/* ====================================================================================== */

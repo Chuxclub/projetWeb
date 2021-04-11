@@ -205,3 +205,7 @@ class PaniersController extends AbstractController
         return $this->redirectToRoute("contenu_panier");
     }
 }
+
+/* ====================================================================================== */
+/* AUTEURS: Amandine Fradet, Florian Legendre                                             */
+/* ====================================================================================== */

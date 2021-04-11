@@ -132,3 +132,8 @@ class ProduitsController extends AbstractController
         return $this->render("Layouts/index.html.twig");
     }
 }
+
+
+/* ====================================================================================== */
+/* AUTEURS: Amandine Fradet, Florian Legendre                                             */
+/* ====================================================================================== */

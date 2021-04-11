@@ -68,3 +68,7 @@ class ClientsController extends AbstractController
         return $this->render('Utilisateurs/Clients/manage_profil.html.twig', $args);
     }
 }
+
+/* ====================================================================================== */
+/* AUTEURS: Amandine Fradet, Florian Legendre                                             */
+/* ====================================================================================== */

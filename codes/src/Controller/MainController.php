@@ -50,3 +50,7 @@ class MainController extends AbstractController
         return $this->render('Layouts/header.html.twig', $args);
     }
 }
+
+/* ====================================================================================== */
+/* AUTEURS: Amandine Fradet, Florian Legendre                                             */
+/* ====================================================================================== */

@@ -69,3 +69,7 @@ class VisiteursController extends AbstractController
         return $this->redirectToRoute("main_index");
     }
 }
+
+/* ====================================================================================== */
+/* AUTEURS: Amandine Fradet, Florian Legendre                                             */
+/* ====================================================================================== */
