@@ -8,6 +8,7 @@ use App\Entity\Utilisateur;
 use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -70,12 +71,12 @@ class PaniersController extends AbstractController
      *     name="panier_ajoutPanier"
      * )
      */
-    public function ajoutPanierAction(): Response
+    public function ajoutPanierAction(Request $request): Response
     {
         $produitsRepository = $this->em->getRepository('App:Produit');
         $paniersRepository = $this->em->getRepository('App:Panier');
 
-        foreach($_POST as $idProduit => $qteProduit)
+        foreach($request->request as $idProduit => $qteProduit)
         {
             if($qteProduit > 0) {
                 //On gère les produits dans la BD:
