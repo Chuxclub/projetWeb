@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     )
  * @ORM\Entity(repositoryClass=ProduitsRepository::class)
  */
-class Produits
+class Produit
 {
     /**
      * @ORM\Id

@@ -8,7 +8,7 @@ class ProduitsService
 {
     public function getAllProducts(EntityManagerInterface $em) : array
     {
-        $produitsRepository = $em->getRepository('App\Entity\Produits');
+        $produitsRepository = $em->getRepository('App\Entity\Produit');
         $produits = $produitsRepository->findAll();
 
         return $produits;

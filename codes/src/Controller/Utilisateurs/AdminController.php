@@ -4,7 +4,7 @@
 namespace App\Controller\Utilisateurs;
 
 
-use App\Entity\Utilisateurs;
+use App\Entity\Utilisateur;
 use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,9 +32,9 @@ class AdminController extends AbstractController
      */
     public function manageAccountAction(): Response
     {
-        $users = $this->getDoctrine()->getRepository(Utilisateurs::class)->findAll();
+        $users = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
 
-        return $this->render('Utilisateurs/Admin/manage_users.html.twig', [
+        return $this->render('Utilisateur/Admin/manage_users.html.twig', [
             'users' => $users,
         ]);
     }
@@ -42,7 +42,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/deleteAccount/{id}", name="delete_account")
      */
-    public function deleteAccountAction(Utilisateurs $user): Response
+    public function deleteAccountAction(Utilisateur $user): Response
     {
         if ($user === $this->user)
         {

@@ -4,7 +4,7 @@
 namespace App\Controller\Utilisateurs;
 
 
-use App\Entity\Utilisateurs;
+use App\Entity\Utilisateur;
 use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,7 +35,7 @@ class VisiteursController extends AbstractController
      */
     public function createAccountAction(Request $request): Response
     {
-        $newUser = new Utilisateurs();
+        $newUser = new Utilisateur();
 
         $form = $this->createForm(CreateAccountType::class, $newUser);
         $form->add('send', SubmitType::class, ['label' => 'create account']);
@@ -54,7 +54,7 @@ class VisiteursController extends AbstractController
             $this->addFlash('info', 'Form not correct');
 
         $args = array('myform' => $form->createView());
-        return $this->render('Utilisateurs/Visiteur/create_customer_account.html.twig', $args);
+        return $this->render('Utilisateur/Visiteur/create_customer_account.html.twig', $args);
     }
 
     /**

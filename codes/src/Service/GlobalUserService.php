@@ -2,25 +2,25 @@
 
 namespace App\Service;
 
-use App\Entity\Utilisateurs;
+use App\Entity\Utilisateur;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GlobalUserService extends AbstractController
 {
-    public function getGlobalUser(): ?Utilisateurs
+    public function getGlobalUser(): ?Utilisateur
     {
         $userLogin = $this->getParameter('login');
 
         $em = $this->getDoctrine()->getManager();
-        $utilisateursRepository = $em->getRepository('App:Utilisateurs');
+        $utilisateursRepository = $em->getRepository('App:Utilisateur');
 
-        /** @var Utilisateurs $user */
+        /** @var Utilisateur $user */
         $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
         return $user;
     }
 
-    public function checkUser(?Utilisateurs $user, $userType)
+    public function checkUser(?Utilisateur $user, $userType)
     {
         switch($userType)
         {

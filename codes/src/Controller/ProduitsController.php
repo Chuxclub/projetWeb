@@ -5,8 +5,8 @@ namespace App\Controller;
 
 
 use App\Entity\Panier;
-use App\Entity\Produits;
-use App\Entity\Utilisateurs;
+use App\Entity\Produit;
+use App\Entity\Utilisateur;
 use App\Form\AddProductType;
 use App\Service\GlobalUserService;
 use App\Service\ProduitsService;
@@ -47,7 +47,7 @@ class ProduitsController extends AbstractController
         //Cette action servait essentiellement au développement du site (peupler la base)
         //et n'est donc pas protégée car ne correspond à aucun utilisateur du cahier des charges.
         //On fait donc directement l'action:
-        $product = new Produits();
+        $product = new Produit();
         $product->setLibelle("Zelda Majora's Mask")
                 ->setPrixUnitaire(32)
                 ->setQte(1);
@@ -66,7 +66,7 @@ class ProduitsController extends AbstractController
         $globalUser->checkUser($this->user, "admin");
 
         //Si c'est bien un admin, on fait l'action:
-        $product = new Produits();
+        $product = new Produit();
 
         $form = $this->createForm(AddProductType::class, $product);
         $form->add('send', SubmitType::class, ['label' => 'add a new product']);
@@ -85,7 +85,7 @@ class ProduitsController extends AbstractController
             $this->addFlash('info', 'Form not correct');
 
         $args = array('myform' => $form->createView());
-        return $this->render('Utilisateurs/Admin/add_product.html.twig', $args);
+        return $this->render('Utilisateur/Admin/add_product.html.twig', $args);
     }
 
 
@@ -105,7 +105,7 @@ class ProduitsController extends AbstractController
         $globalUser->checkUser($this->user, "client");
 
         //Si c'est bien un client on fait l'action:
-        return $this->render('Produits/product_list.html.twig',
+        return $this->render('Produit/product_list.html.twig',
                                  ['produits' => $produitsService->getAllProducts($this->em)]);
     }
 
@@ -123,7 +123,7 @@ class ProduitsController extends AbstractController
             ->setTo('amandine.fradet@live.fr')
             ->setBody(
                 $this->renderView(
-                    'Produits/product_mail.html.twig',
+                    'Produit/product_mail.html.twig',
                     ['nbProduits' => $produitsService->getNbProducts($this->em)]
                 ),
                 'text/html'

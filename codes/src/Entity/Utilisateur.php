@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *     )
  * @ORM\Entity(repositoryClass=UtilisateursRepository::class)
  */
-class Utilisateurs
+class Utilisateur
 {
     /**
      * @ORM\Id

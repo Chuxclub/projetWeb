@@ -4,7 +4,7 @@
 namespace App\Controller\Utilisateurs;
 
 
-use App\Entity\Utilisateurs;
+use App\Entity\Utilisateur;
 use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,7 +36,7 @@ class UtilisateursController extends AbstractController
      */
     public function utilisateursAjouterEnDurAction(): Response
     {
-        $user = new Utilisateurs();
+        $user = new Utilisateur();
         $user->setLogin("dummy")
             ->setMdp(sha1("ymmud"))
             ->setDateN(new \DateTime('2021-03-31'))

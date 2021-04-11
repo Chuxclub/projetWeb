@@ -5,7 +5,7 @@ namespace App\Controller\Utilisateurs;
 
 
 use App\Entity\Panier;
-use App\Entity\Produits;
+use App\Entity\Produit;
 use App\Form\ClientProfilType;
 use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,6 +65,6 @@ class ClientsController extends AbstractController
             $this->addFlash('error', 'Error in form');
 
         $args = array('myform' => $form->createView());
-        return $this->render('Utilisateurs/Client/manage_profil.html.twig', $args);
+        return $this->render('Utilisateur/Client/manage_profil.html.twig', $args);
     }
 }

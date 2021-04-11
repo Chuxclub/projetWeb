@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Panier;
-use App\Entity\Produits;
-use App\Entity\Utilisateurs;
+use App\Entity\Produit;
+use App\Entity\Utilisateur;
 use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,13 +44,13 @@ class PaniersController extends AbstractController
         //On prend un utilisateur (on pourrait prendre n'importe lequel mais on choisit
         // l'utilisateur courant ici pour pouvoir tester rapidement dans un navigateur) :
         $userLogin = $this->getParameter('login');
-        $utilisateursRepository = $this->em->getRepository('App:Utilisateurs');
-        /** @var Utilisateurs $user */
+        $utilisateursRepository = $this->em->getRepository('App:Utilisateur');
+        /** @var Utilisateur $user */
         $user = $utilisateursRepository->findOneBy(['login' => $userLogin]);
 
         //On prend un produit:
-        $produitsRepository = $this->em->getRepository('App:Produits');
-        /** @var Produits $produit */
+        $produitsRepository = $this->em->getRepository('App:Produit');
+        /** @var Produit $produit */
         $produit = $produitsRepository->find(2);//TLZ Majora's Mask
 
         //On crée le panier + ajout à la base:
@@ -72,7 +72,7 @@ class PaniersController extends AbstractController
      */
     public function ajoutPanierAction(): Response
     {
-        $produitsRepository = $this->em->getRepository('App:Produits');
+        $produitsRepository = $this->em->getRepository('App:Produit');
         $paniersRepository = $this->em->getRepository('App:Panier');
 
         foreach($_POST as $idProduit => $qteProduit)
@@ -87,7 +87,7 @@ class PaniersController extends AbstractController
                 $panierToAdd = $paniersRepository->findOneBy(['utilisateur' => $this->user, 'produit' => $idProduit]);
                 if (is_null($panierToAdd)) {
                     $panier = new Panier();
-                    /** @var Produits $produit */
+                    /** @var Produit $produit */
 
                     $panier->setUtilisateur($this->user)
                         ->setQte($qteProduit)
@@ -117,7 +117,7 @@ class PaniersController extends AbstractController
     public function contenuPanierAction(): Response
     {
         $paniers = $this->user->getPaniers();
-        return $this->render('Utilisateurs/Client/basket.html.twig', ['paniers' => $paniers]);
+        return $this->render('Utilisateur/Client/basket.html.twig', ['paniers' => $paniers]);
     }
 
 
@@ -156,8 +156,8 @@ class PaniersController extends AbstractController
     private function supprimerPanierBD($idProduit, $panierToDelete)
     {
         //On récupère modifie la quantité du produit correspondant dans la base du magasin:
-        $produitsRepository = $this->em->getRepository('App\Entity\Produits');
-        /** @var Produits $produit */
+        $produitsRepository = $this->em->getRepository('App\Entity\Produit');
+        /** @var Produit $produit */
         $produit = $produitsRepository->find($idProduit);
         $produit->setQte($produit->getQte() + $panierToDelete->getQte());
 
