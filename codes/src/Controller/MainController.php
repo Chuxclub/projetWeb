@@ -2,13 +2,10 @@
 
 namespace App\Controller;
 
-
-use App\Entity\Produits;
 use App\Service\GlobalUserService;
 use App\Service\ProduitsService;
 use App\Service\SecretService;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

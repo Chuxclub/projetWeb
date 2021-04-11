@@ -2,9 +2,11 @@
 
 namespace App\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
+
 class ProduitsService
 {
-    public function getAllProducts($em) : array
+    public function getAllProducts(EntityManagerInterface $em) : array
     {
         $produitsRepository = $em->getRepository('App\Entity\Produits');
         $produits = $produitsRepository->findAll();
@@ -12,7 +14,7 @@ class ProduitsService
         return $produits;
     }
 
-    public function getNbProducts($em): int
+    public function getNbProducts(EntityManagerInterface $em): int
     {
         $produits = $this->getAllProducts($em);
 

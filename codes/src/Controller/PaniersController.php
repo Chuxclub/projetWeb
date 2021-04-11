@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Entity\Panier;
 use App\Entity\Produits;
@@ -17,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package App\Controller
  * @Route("/paniers")
  */
-class PanierController extends AbstractController
+class PaniersController extends AbstractController
 {
     private $em;
     private $user;
