@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package App\Controller
  * @Route("/admin")
  */
-class AdminController extends AbstractController
+class AdminsController extends AbstractController
 {
     private $em;
     private $user;

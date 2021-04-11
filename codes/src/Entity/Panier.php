@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\PanierRepository;
+use App\Repository\PaniersRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="im2021_panier",
  *     options={"comment"="Panier de l'utilisateur (jointure entre utilisateurs et produits)"},
  *     )
- * @ORM\Entity(repositoryClass=PanierRepository::class)
+ * @ORM\Entity(repositoryClass=PaniersRepository::class)
  */
 class Panier
 {

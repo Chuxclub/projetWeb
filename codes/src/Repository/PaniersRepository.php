@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Panier[]    findAll()
  * @method Panier[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PanierRepository extends ServiceEntityRepository
+class PaniersRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
