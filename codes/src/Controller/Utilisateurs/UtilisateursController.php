@@ -4,6 +4,7 @@ namespace App\Controller\Utilisateurs;
 
 use App\Entity\Utilisateur;
 use App\Service\GlobalUserService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +38,7 @@ class UtilisateursController extends AbstractController
         $user = new Utilisateur();
         $user->setLogin("dummy")
             ->setMdp(sha1("ymmud"))
-            ->setDateN(new \DateTime('2021-03-31'))
+            ->setDateN(new DateTime('2021-03-31'))
             ->setIsAdmin(false);
         $this->em->persist($user);
         $this->em->flush();

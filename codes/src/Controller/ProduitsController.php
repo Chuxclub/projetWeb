@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Panier;
 use App\Entity\Produit;
-use App\Entity\Utilisateur;
 use App\Form\AddProductType;
 use App\Service\GlobalUserService;
 use App\Service\ProduitsService;
 use Doctrine\ORM\EntityManagerInterface;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -114,9 +114,9 @@ class ProduitsController extends AbstractController
      *     name="produits_mail"
      * )
      */
-    public function produitsMailAction(\Swift_Mailer $mailer, ProduitsService $produitsService)
+    public function produitsMailAction(Swift_Mailer $mailer, ProduitsService $produitsService): Response
     {
-        $message = (new \Swift_Message('Hello Email'))
+        $message = (new Swift_Message('Hello Email'))
             ->setFrom('florian-1992@hotmail.fr')
             ->setTo('amandine.fradet@live.fr')
             ->setBody(

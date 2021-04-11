@@ -7,6 +7,7 @@ namespace App\Controller\Utilisateurs;
 use App\Form\ClientProfilType;
 use App\Service\GlobalUserService;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
@@ -38,7 +39,7 @@ class ClientsController extends AbstractController
      *      name="clients_editProfil"
      * )
      */
-    public function editProfil(Request $request, GlobalUserService $globalUser): Response
+    public function editProfil(Request $request): Response
     {
         //On crée le formulaire:
         $form = $this->createForm(ClientProfilType::class, $this->user);
@@ -55,7 +56,7 @@ class ClientsController extends AbstractController
             }
 
             //TODO : Si plusieurs champs pouvant être uniques? Si plusieurs types d'exceptions?
-            catch(\Exception $e)
+            catch(Exception $e)
             {$form->addError(new FormError("Sorry! This login already exists."));}
         }
 
