@@ -1,3 +1,8 @@
 swiftmailer:
-    url: '%env(MAILER_URL)%'
-    spool: { type: 'memory' }
+    transport: gmail
+    username: "florian.legendre.corby@gmail.com"
+    password: "monSuperMdp"
+    # Remarque, sous Google il faut autoriser les accès par des applications moins sécurisées, cf. Lien ci-dessous
+    # => https://support.google.com/accounts/answer/6010255#zippy=%2Csi-le-param%C3%A8tre-autoriser-les-applications-moins-s%C3%A9curis%C3%A9es-est-activ%C3%A9-pour-votre-compte
+#   url: '%env(MAILER_URL)%'
+#   spool: { type: 'memory' }

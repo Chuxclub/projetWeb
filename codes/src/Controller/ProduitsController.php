@@ -109,4 +109,41 @@ class ProduitsController extends AbstractController
 
         return $this->render('Produits/product_list.html.twig', ['produits' => $produits]);
     }
+
+    public function produitsNombreProduitsAction() : int
+    {
+        $produitsRepository = $this->em->getRepository('App:Produits');
+        /** @var Produits[] $produits */
+        $produits = $produitsRepository->findAll();
+
+        $totalProduits = 0;
+        for($i = 0; $i < count($produits); $i++)
+            $totalProduits += $produits[$i]->getQte();
+
+        return $totalProduits;
+    }
+
+    /**
+     * @Route(
+     *     "/mail",
+     *     name="produits_mail"
+     * )
+     */
+    public function produitsMailAction(\Swift_Mailer $mailer)
+    {
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('florian-1992@hotmail.fr')
+            ->setTo('amandine.fradet@live.fr')
+            ->setBody(
+                $this->renderView(
+                    'Produits/product_mail.html.twig',
+                    ['nbProduits' => $this->produitsNombreProduitsAction()]
+                ),
+                'text/html'
+            );
+
+        $mailer->send($message);
+
+        return $this->render("Layouts/index.html.twig");
+    }
 }
